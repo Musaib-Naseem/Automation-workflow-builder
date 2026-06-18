@@ -1,11 +1,11 @@
 import React from "react";
 import Node from "../Node/Node";
 
-const Canvas=({nodes})=>{
+const Canvas=({nodes,deleteNode})=>{
 
 return(
 
-<>
+<div style={{ position:"relative",width:"100%",height:"200px",backgroundColor:"#d3d3d3"}}>
 
 <h1> Canvas </h1>
 
@@ -17,7 +17,7 @@ return(
  
    <>
 
-   <Node key={node.id} label={node.label} />   
+   <Node key={node.id} id={node.id}  label={node.label} x={node.x}  y={node.y}  deleteNode={deleteNode}/>   
    
    </>
 
@@ -27,7 +27,7 @@ return(
 
  }
 
-</>
+</div>
 
 )
 
