@@ -86,11 +86,38 @@ setNodes(nodes.filter((node)=>node.id !== id));
   return (
     <>
      
-   <h1> Workflow Builder New </h1>
+   {/* 
 
-   <Sidebar AddNodes={AddNodes} />
+  
+ 
+
+   <br />
+
+    */}
+
 
    <div>
+
+   <div style={{ borderBottom:"1px solid grey"}} className='h-20 w-full'>
+
+  <h1 className="text-4xl font-bold"> Workflow Builder </h1>
+
+   </div>
+
+   <div  className='flex'>
+
+   <div className='w-[25%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
+
+ <Sidebar AddNodes={AddNodes} />
+
+
+   </div>
+
+    <div className='w-full h-[100vh]'>
+
+    <div>
+
+      <Canvas nodes={nodes} deleteNode={deleteNode}/>
 
    <button onClick={moveRight}> Move Right </button>
 
@@ -102,9 +129,17 @@ setNodes(nodes.filter((node)=>node.id !== id));
 
    </div>
 
-   <br />
+   </div>
 
-   <Canvas nodes={nodes} deleteNode={deleteNode}/>
+
+   </div>
+
+
+
+
+
+
+   </div>
 
     </>
   )

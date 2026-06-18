@@ -7,7 +7,7 @@ return(
 
 <div style={{ position:"relative",width:"100%",height:"200px",backgroundColor:"#d3d3d3"}}>
 
-<h1> Canvas </h1>
+
 
  {
 
