@@ -1,46 +1,46 @@
 import { useState } from 'react'
-import './App.css'
 import Sidebar from './Components/Sidebar/Sidebar';
 import Canvas from "./Components/Canvas/Canvas";
 import Node from './Components/Node/Node';
+import type { WorkFlowMode } from './Types_ts/node';
 
 
 function App() {
 
-const [nodes,setNodes] = useState([
+const [nodes,setNodes] = useState<WorkFlowMode[]>([
 
 
   {
     id: 1,
     label: "Email",
-    x: 0,
-    y: 0
+    x: 100,
+    y: 50
   },
   {
     id: 2,
     label: "Delay",
-    x: 300,
-    y: 100
+    x: 250,
+    y: 50
   },
   {
     id: 3,
     label: "Condition",
-    x: 550,
-    y: 100
+    x: 400,
+    y: 50
   },
 
   {
   id: 4,
   label: "Webhook",
-  x: 750,
-  y: 250
+  x: 550,
+  y: 50
 }
 
 ]);
 
 
 
-
+console.log(nodes);
 
 
 
@@ -77,23 +77,26 @@ setNodes(nodes.map((node)=>({...node,x:node.y+50})))
 }
 
 
-const deleteNode=(id)=>{
+const deleteNode=(id:number)=>{
 
 setNodes(nodes.filter((node)=>node.id !== id));
 
 }
 
+
+const updateNodePosition=(id:number,x:number,y:number)=>{
+
+setNodes(nodes.map((node)=>{
+
+return node.id == id ? { ...node,x,y } : node
+
+}))
+
+
+}
+
   return (
     <>
-     
-   {/* 
-
-  
- 
-
-   <br />
-
-    */}
 
 
    <div>
@@ -117,7 +120,7 @@ setNodes(nodes.filter((node)=>node.id !== id));
 
     <div>
 
-      <Canvas nodes={nodes} deleteNode={deleteNode}/>
+  <Canvas nodes={nodes} deleteNode={deleteNode} updateNodePosition={updateNodePosition} />
 
    <button onClick={moveRight}> Move Right </button>
 

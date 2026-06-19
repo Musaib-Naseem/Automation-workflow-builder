@@ -1,6 +1,12 @@
 import React from "react";
 
-const Sidebar=({AddNodes})=>{
+type sidebarProps={
+
+AddNodes:()=>void
+
+}
+
+const Sidebar=({AddNodes}:sidebarProps)=>{
 
 return(
 
