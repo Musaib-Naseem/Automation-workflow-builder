@@ -1,8 +1,15 @@
-export type workFlowNode={
+export type WorkFlowMode={
 
-id:number,
-label:string,
-x:number,
-y:number
+id:string,
+position:{x:number,y:number},
+data:{label:string}
+
+}
+
+export type nodeProps={
+
+id:string;
+source:string;
+target:string
 
 }

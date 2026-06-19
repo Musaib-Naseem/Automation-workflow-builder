@@ -1,5 +1,8 @@
-import Sidebar from "./Components/Sidebar/Sidebar";
+import { useState } from 'react'
+import Sidebar from './Components/Sidebar/Sidebar';
 import Canvas from "./Components/Canvas/Canvas";
+import ReactFlow from "reactflow";
+import "reactflow/dist/style.css";
 
 
 function App() {
@@ -71,7 +74,7 @@ target:"3"
 
    <div  className='flex'>
 
-   <div className='w-[40%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
+   <div className='w-[25%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
 
  <Sidebar />
 
@@ -98,21 +101,4 @@ target:"3"
   )
 }
 
-export default App;
-
-
-// const App=()=>{
-
-// return(
-
-
-// <div style={{ width:"100vw" , height:"100vh"}}>
-// <ReactFlow nodes={nodes}  edges={edges}/>
-// </div>
-
-// )
-
-// }
-
-
-// export default App;
+export default App

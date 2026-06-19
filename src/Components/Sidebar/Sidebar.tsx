@@ -1,18 +1,13 @@
 import React from "react";
 
-type sidebarProps={
 
-AddNodes:()=>void
-
-}
-
-const Sidebar=({AddNodes}:sidebarProps)=>{
+const Sidebar=()=>{
 
 return(
 
 <>
 
-<button onClick={AddNodes}> Add Node </button>
+<button > Add Node </button>
 
 </>
 
