@@ -1,24 +1,49 @@
-Workflow Automation Builder
+# Automation Workflow Builder
 
-Workflow Automation Builder is a visual workflow orchestration platform designed to simplify the creation and management of business processes through an intuitive node-based interface.
+A visual workflow builder built with React, TypeScript, and React Flow.
 
-The application enables users to design workflows, define execution paths, and manage process logic using a visual canvas, reducing the complexity of manual process configuration.
+## Features
 
+* Visual workflow canvas
+* Drag and drop workflow nodes
+* Create connections between nodes
+* Settings panel for node configuration
+* Edit node labels in real time
+* Save workflow using Local Storage
+* Load saved workflow automatically
+* Export workflow as JSON
+* TypeScript support
+* Responsive UI with Tailwind CSS
 
-Key Objectives
-Visual workflow design
-Scalable frontend architecture
-Reusable component system
-Extensible workflow engine
-High-performance user experience
+## Tech Stack
 
+* React
+* TypeScript
+* React Flow
+* Tailwind CSS
+* Vite
 
-Technology Stack
-React
-Vite
-JavaScript
-CSS
+## Getting Started
 
-Installation
+### Install Dependencies
+
+```bash
 npm install
+```
+
+### Start Development Server
+
+```bash
 npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+## Project Status
+
+This project is currently under active development. New workflow features, custom nodes, execution logic, and backend integration will be added in future updates.
+
