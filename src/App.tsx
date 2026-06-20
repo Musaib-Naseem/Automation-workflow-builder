@@ -1,10 +1,17 @@
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Canvas from "./Components/Canvas/Canvas";
+import { useState } from "react";
+import type { WorkFlowMode } from "./Types_ts/node";
+import SettingPanel from "./Components/SettingPanel/SettingPanel";
 
 
 function App() {
 
-const nodes = [
+const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
+
+console.log(selectedNode);
+
+const [nodes,setNodes] = useState([
 
 {
 
@@ -30,7 +37,7 @@ data:{label:"Condition"}
 
 }
 
-];
+]);
 
 
 
@@ -52,10 +59,26 @@ target:"3"
 
 }
 
-]
+];
 
 
+const updateSelectedNodes=(id:string,label:string)=>{
 
+setNodes(nodes.map((node)=>node.id === id ? {...node,data:{...node.data,label}} : node ));
+setSelectedNode((prev) => {
+  if (!prev || prev.id !== id) return prev;
+
+  return {
+    ...prev,
+    data: {
+      ...prev.data,
+      label,
+    },
+  };
+});
+};
+
+console.log(nodes);
 
   return (
     <>
@@ -63,7 +86,7 @@ target:"3"
 
    <div>
 
-   <div style={{ borderBottom:"1px solid grey"}} className='h-20 w-full'>
+   <div style={{ borderBottom:"1px solid grey"}} className='h-20'>
 
   <h1 className="text-4xl font-bold"> Workflow Builder </h1>
 
@@ -78,13 +101,23 @@ target:"3"
 
    </div>
 
-    <div className='w-full h-[100vh]'>
+    <div className='h-[100vh]'>
 
     <div>
 
-  <Canvas nodes={nodes}  edges={edges}/>
+  <Canvas nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
+
+   </div>
+
+
+    <div className='w-[40%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
+
+ 
+
+    <SettingPanel selectedNode={selectedNode}  updateSelectedNodes={updateSelectedNodes}/>
+
 
    </div>
 
