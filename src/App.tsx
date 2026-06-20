@@ -62,7 +62,6 @@ localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 },[nodes])
 
 
-
 const edges = [
 
 {
@@ -102,6 +101,42 @@ setSelectedNode((prev) => {
 
 console.log(nodes);
 
+
+const exportWorkflow=()=>{
+
+const workflow={
+
+nodes,
+edges
+
+}
+
+
+const blob =new Blob(
+
+[JSON.stringify(workflow,null,2)],
+{
+
+type:"application/json",
+
+}
+
+);
+
+
+const url = URL.createObjectURL(blob);
+
+const a = document.createElement("a");
+
+a.href = url;
+a.download = "workflow.json";
+a.click();
+
+
+}
+
+
+
   return (
     <>
 
@@ -119,6 +154,8 @@ console.log(nodes);
    <div className='w-[40%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
 
  <Sidebar />
+
+ <button onClick={ exportWorkflow}> Download Workflow </button>
 
 
    </div>
