@@ -1,6 +1,6 @@
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Canvas from "./Components/Canvas/Canvas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { WorkFlowMode } from "./Types_ts/node";
 import SettingPanel from "./Components/SettingPanel/SettingPanel";
 
@@ -11,7 +11,8 @@ const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
 
 console.log(selectedNode);
 
-const [nodes,setNodes] = useState([
+
+const defaultNodes:WorkFlowMode[] = [
 
 {
 
@@ -37,7 +38,28 @@ data:{label:"Condition"}
 
 }
 
-]);
+]
+
+
+
+
+
+
+
+const [nodes,setNodes] = useState<WorkFlowMode[]>(()=>{
+
+const savedNodes = localStorage.getItem("workflowNodes");
+
+return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
+
+});
+
+
+useEffect(()=>{
+
+localStorage.setItem("workflowNodes",JSON.stringify(nodes));
+
+},[nodes])
 
 
 
