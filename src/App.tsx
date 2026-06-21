@@ -1,11 +1,15 @@
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Canvas from "./Components/Canvas/Canvas";
 import { useEffect, useState } from "react";
-import type { WorkFlowMode } from "./Types_ts/node";
+import type { WorkFlowMode,WorkFlowMode2 } from "./Types_ts/node";
 import SettingPanel from "./Components/SettingPanel/SettingPanel";
 import { BiExport } from "react-icons/bi";
 import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
+import { LuClock3 } from "react-icons/lu";
+import { GoGitBranch } from "react-icons/go";
+import { TbWebhook } from "react-icons/tb";
 
 
 
@@ -14,16 +18,21 @@ function App() {
 
 const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
 
-console.log(selectedNode);
-
-
-const defaultNodes:WorkFlowMode[] = [
+const defaultNodes:WorkFlowMode2[] = [
 
 {
 
 id:"1",
 position:{x:100,y:100},
-data:{label:"Email"}
+data:{
+  
+label:"Email",
+icon:MdEmail,
+bg: "bg-purple-100",
+color: "text-purple-600",
+
+},
+
 
 },
 
@@ -31,7 +40,13 @@ data:{label:"Email"}
 
 id:"2",
 position:{x:300,y:100},
-data:{label:"Delay"}
+data:{
+  label:"Delay",
+icon: LuClock3,
+bg: "bg-orange-100",
+color: "text-orange-600",
+},
+
 
 },
 
@@ -39,7 +54,14 @@ data:{label:"Delay"}
 
 id:"3",
 position:{x:500,y:100},
-data:{label:"Condition"}
+data:{
+  label:"Condition",
+icon: GoGitBranch,
+bg: "bg-green-100",
+color: "text-green-600",
+
+},
+
 
 }
 
@@ -47,7 +69,7 @@ data:{label:"Condition"}
 
 
 
-const [nodes,setNodes] = useState<WorkFlowMode[]>(()=>{
+const [nodes,setNodes] = useState<WorkFlowMode2[]>(()=>{
 
 const savedNodes = localStorage.getItem("workflowNodes");
 
@@ -159,15 +181,14 @@ a.click();
 
    <div  className='flex w-full'>
 
-   <div className='w-[w-15%]' style={{ borderRight:"1.5px solid #D0D0D0"}}>
+   <div className='w-[18%]' style={{ borderRight:"1.5px solid #D0D0D0"}}>
 
- <Sidebar />
+ <Sidebar nodes={nodes}/>
 
- <button onClick={ exportWorkflow}> Download Workflow </button>
 
    </div>
 
-    <div className='w-[60%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0"}}>
+    <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0"}}>
 
   <Canvas nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
