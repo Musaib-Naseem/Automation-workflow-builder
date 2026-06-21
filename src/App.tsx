@@ -3,6 +3,11 @@ import Canvas from "./Components/Canvas/Canvas";
 import { useEffect, useState } from "react";
 import type { WorkFlowMode } from "./Types_ts/node";
 import SettingPanel from "./Components/SettingPanel/SettingPanel";
+import { BiExport } from "react-icons/bi";
+import { LuWorkflow } from "react-icons/lu";
+import { MdOutlineDelete } from "react-icons/md";
+
+
 
 
 function App() {
@@ -39,10 +44,6 @@ data:{label:"Condition"}
 }
 
 ]
-
-
-
-
 
 
 
@@ -141,45 +142,42 @@ a.click();
     <>
 
 
-   <div>
+   <div style={{ backgroundColor:"#ffffff"}}>
 
-   <div style={{ borderBottom:"1px solid grey"}} className='h-20'>
+   <div style={{ borderBottom:"1px solid #D0D0D0"}} className='h-20 flex items-center p-2 px-10 py-2 justify-between'>
 
-  <h1 className="text-4xl font-bold"> Workflow Builder </h1>
-
+  <h1 className="text-2xl font-bold flex items-center"> <LuWorkflow style={{ color:"#6040E0"}} size={28} /> &nbsp; Workflow Builder </h1>
+  
+  <div className="flex">
+  <button style={{ border:"1px solid #D0D0D0"}} className="mr-6 text-sm px-4 py-2 bg-[#ffffff] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#4F33BD] transition"> <MdOutlineDelete  style={{ fontSize:"18px",color:"#374151"}}/> &nbsp;&nbsp;Clear Workflow</button>
+   
+  <button className="text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition"> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
    </div>
+   
+  </div>
 
-   <div  className='flex'>
 
-   <div className='w-[40%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
+   <div  className='flex w-full'>
+
+   <div className='w-[w-15%]' style={{ borderRight:"1.5px solid #D0D0D0"}}>
 
  <Sidebar />
 
  <button onClick={ exportWorkflow}> Download Workflow </button>
 
-
    </div>
 
-    <div className='h-[100vh]'>
-
-    <div>
+    <div className='w-[60%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0"}}>
 
   <Canvas nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
 
-   </div>
-
-
-    <div className='w-[40%] h-[100vh]' style={{ borderRight:"1px solid grey"}}>
-
- 
+    <div className='w-[25%]' style={{ borderRight:"1px solid grey"}}>
 
     <SettingPanel selectedNode={selectedNode}  updateSelectedNodes={updateSelectedNodes}/>
 
-
    </div>
-
 
    </div>
 
@@ -191,20 +189,3 @@ a.click();
 }
 
 export default App;
-
-
-// const App=()=>{
-
-// return(
-
-
-// <div style={{ width:"100vw" , height:"100vh"}}>
-// <ReactFlow nodes={nodes}  edges={edges}/>
-// </div>
-
-// )
-
-// }
-
-
-// export default App;
