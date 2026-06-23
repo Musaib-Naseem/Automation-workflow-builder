@@ -164,7 +164,7 @@ a.click();
     <>
 
 
-   <div style={{ backgroundColor:"#ffffff"}}>
+   <div style={{ backgroundColor:"#ffffff"}} className="overflow-hidden" >
 
    <div style={{ borderBottom:"1px solid #D0D0D0"}} className='h-20 flex items-center p-2 px-10 py-2 justify-between'>
 
@@ -179,12 +179,11 @@ a.click();
   </div>
 
 
-   <div  className='flex w-full'>
+   <div  className='flex'>
 
    <div className='w-[18%]' style={{ borderRight:"1.5px solid #D0D0D0"}}>
 
- <Sidebar nodes={nodes}/>
-
+   <Sidebar nodes={nodes}/>
 
    </div>
 
@@ -194,7 +193,7 @@ a.click();
 
    </div>
 
-    <div className='w-[25%]' style={{ borderRight:"1px solid grey"}}>
+    <div className='w-[25%]'>
 
     <SettingPanel selectedNode={selectedNode}  updateSelectedNodes={updateSelectedNodes}/>
 
