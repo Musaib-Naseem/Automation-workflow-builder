@@ -4,9 +4,7 @@ id:string,
 position:{x:number,y:number},
 data:{
 label:string,
-icon:any,
-bg:string,
-color:string
+type:string
 }
 
 
@@ -25,5 +23,17 @@ export type nodeProps={
 id:string;
 source:string;
 target:string
+
+}
+
+export type NodeConfigType = {
+
+[key:string]:{
+
+icon:React.ElementType,
+bg:string,
+color:string
+
+}
 
 }

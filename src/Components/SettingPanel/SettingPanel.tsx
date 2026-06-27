@@ -22,7 +22,6 @@ Setting Panel
 
 </h1>
 
-
 {!selectedNode && ( <p>Select a Node</p> )}
 
 {
@@ -35,12 +34,11 @@ selectedNode && (
 
 <p> Selected Label : { selectedNode.data.label}</p>
 
-<input type="text" value={selectedNode?.data.label || ""}  onChange={ (e)=>selectedNode && updateSelectedNodes(selectedNode.id,e.target.value)  }/>
+<input type="text" value={selectedNode?.data.label || ""}  onChange={ (e)=>updateSelectedNodes(selectedNode.id,e.target.value)  }/>
 
 </div>
 
 )
-
 
 }
 

@@ -1,12 +1,13 @@
 import React from "react";
 import type { WorkFlowMode2 } from "../../Types_ts/node";
-
+import { ConfigNode } from "../../Types_ts/ConfigNode";
 
 type SidebarProps={
 
 nodes:WorkFlowMode2[]
 
 }
+
 
 const Sidebar=({nodes}:SidebarProps)=>{
 
@@ -21,18 +22,20 @@ return(
 {
 
 nodes && nodes.map((details)=>{
+ 
+const config = ConfigNode[details.data.label as keyof typeof ConfigNode];
 
-const Icon = details.data.icon;
+const Icon = config && config.icon;
 
-console.log(details)
+
 
 return(
 
 <div key={details.id} className="w-38 flex items-center gap-4 p-2 border border-gray-200 rounded-xl cursor-pointer hover:shadow-md transition">
 
-<div className={`w-10 h-10 flex items-center justify-center rounded-lg ${details.data.bg}`}> 
+<div className={`w-10 h-10 flex items-center justify-center rounded-lg ${config && config.bg}`}> 
 
-{ Icon && <Icon className={`text-xl ${details.data.color}`}  /> }
+{ Icon && <Icon className={`text-xl ${config && config.color}`}  /> }
 
 </div>
 

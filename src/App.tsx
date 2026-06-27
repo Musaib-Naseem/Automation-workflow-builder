@@ -6,11 +6,7 @@ import SettingPanel from "./Components/SettingPanel/SettingPanel";
 import { BiExport } from "react-icons/bi";
 import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
-import { MdEmail } from "react-icons/md";
-import { LuClock3 } from "react-icons/lu";
-import { GoGitBranch } from "react-icons/go";
 import { TbWebhook } from "react-icons/tb";
-
 
 
 
@@ -24,15 +20,11 @@ const defaultNodes:WorkFlowMode2[] = [
 
 id:"1",
 position:{x:100,y:100},
-data:{
-  
+data:{  
 label:"Email",
-icon:MdEmail,
-bg: "bg-purple-100",
-color: "text-purple-600",
+type:"Email"
 
 },
-
 
 },
 
@@ -41,10 +33,9 @@ color: "text-purple-600",
 id:"2",
 position:{x:300,y:100},
 data:{
-  label:"Delay",
-icon: LuClock3,
-bg: "bg-orange-100",
-color: "text-orange-600",
+label:"Delay",
+type:"Delay"
+
 },
 
 
@@ -55,13 +46,10 @@ color: "text-orange-600",
 id:"3",
 position:{x:500,y:100},
 data:{
-  label:"Condition",
-icon: GoGitBranch,
-bg: "bg-green-100",
-color: "text-green-600",
+label:"Condition",
+type:"Condition"
 
 },
-
 
 }
 
@@ -77,6 +65,8 @@ return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 
 });
 
+
+console.log(nodes);
 
 useEffect(()=>{
 
