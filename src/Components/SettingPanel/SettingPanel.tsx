@@ -14,15 +14,15 @@ const SettingPanel=({selectedNode,updateSelectedNodes}:settingPanelProps)=>{
 
 return(
 
-<>
+<div className="pt-6 ">
 
-<h1>
+<h2 className="pl-8 pb-4 text-sm font-bold text-[#111827] border-b-1 border-[#E5E7EB]">
 
-Setting Panel
+SETTING PANEL
 
-</h1>
+</h2>
 
-{!selectedNode && ( <p>Select a Node</p> )}
+{!selectedNode && ( <p className="pl-8 pt-4 text-[#374151] font-[500]"> No Node Selected </p> )}
 
 {
 
@@ -42,7 +42,7 @@ selectedNode && (
 
 }
 
-</>
+</div>
 
 )
 

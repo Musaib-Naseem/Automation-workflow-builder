@@ -28,7 +28,6 @@ const config = ConfigNode[details.data.label as keyof typeof ConfigNode];
 const Icon = config && config.icon;
 
 
-
 return(
 
 <div key={details.id} className="w-38 flex items-center gap-4 p-2 border border-gray-200 rounded-xl cursor-pointer hover:shadow-md transition">
