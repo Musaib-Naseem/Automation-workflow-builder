@@ -1,4 +1,3 @@
-
 import type { WorkFlowMode,nodeProps } from "../../Types_ts/node";
 import ReactFlow from "reactflow";
 import "reactflow/dist/style.css";
@@ -24,4 +23,6 @@ return(
 
 }
 
+
 export default Canvas;
+

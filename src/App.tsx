@@ -22,7 +22,8 @@ id:"1",
 position:{x:100,y:100},
 data:{  
 label:"Email",
-type:"Email"
+type:"Email",
+description:"Send the Welcome Email to the User"
 
 },
 
@@ -34,7 +35,8 @@ id:"2",
 position:{x:300,y:100},
 data:{
 label:"Delay",
-type:"Delay"
+type:"Delay",
+description:"Do the delay of 5 mins"
 
 },
 
@@ -47,7 +49,8 @@ id:"3",
 position:{x:500,y:100},
 data:{
 label:"Condition",
-type:"Condition"
+type:"Condition",
+description:"Let it fullfill the all condition"
 
 },
 
@@ -56,8 +59,9 @@ type:"Condition"
 ]
 
 
-
 const [nodes,setNodes] = useState<WorkFlowMode2[]>(()=>{
+
+localStorage.removeItem("workflowNodes");
 
 const savedNodes = localStorage.getItem("workflowNodes");
 
@@ -107,6 +111,7 @@ setSelectedNode((prev) => {
     data: {
       ...prev.data,
       label,
+    
     },
   };
 });
@@ -183,7 +188,7 @@ a.click();
 
    </div>
 
-    <div className='w-[25%]'>
+    <div className='w-[25%] z-10 relative'>
 
     <SettingPanel selectedNode={selectedNode}  updateSelectedNodes={updateSelectedNodes}/>
 
@@ -197,5 +202,7 @@ a.click();
     </>
   )
 }
+
+
 
 export default App;

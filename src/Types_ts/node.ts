@@ -4,7 +4,8 @@ id:string,
 position:{x:number,y:number},
 data:{
 label:string,
-type:string
+type:string,
+description:string
 }
 
 
@@ -14,7 +15,7 @@ export type WorkFlowMode={
 
 id:string,
 position:{x:number,y:number},
-data:{label:string}
+data:{label:string,type:string,description:string}
 
 }
 
