@@ -9,13 +9,11 @@ type settingPanelProps={
 
 selectedNode:WorkFlowMode|null;
 updateSelectedNodes:(id:string,label:string)=>void
-setNodes:React.Dispatch<React.SetStateAction<WorkFlowMode2[]>
 
 }
 
-const [updateNodes,setUpdatedNodes] = useState([]);
 
-const SettingPanel=({selectedNode,updateSelectedNodes,setNodes}:settingPanelProps)=>{
+const SettingPanel=({selectedNode,updateSelectedNodes}:settingPanelProps)=>{
 
 const config = selectedNode
   ? ConfigNode[selectedNode.data.label as keyof typeof ConfigNode]
@@ -27,7 +25,6 @@ const Icon = config?.icon;
 const upLabel=(e:string,id:string):void=>{
 
 updateSelectedNodes(id,e);
-setUpdatedNodes((prev)=>[...prev,selectedNode]);
 
 }
 
@@ -35,15 +32,9 @@ setUpdatedNodes((prev)=>[...prev,selectedNode]);
 const upDesc=(e:string,id:string):void=>{
 
 updateSelectedNodes(id,e);
-setUpdatedNodes((prev)=>[...prev,selectedNode]);
 
 }
 
-const finalSaveChanges=()=>{
-
-setNodes(updateNodes);
-
-}
 
 return(
 
@@ -109,17 +100,18 @@ focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 
 <br />
 
-<textarea  onChange={(e)=>upDesc(e.target.value,selectedNode.id)}  value={selectedNode.data.description}  className="h-[95px] p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]" />
+<textarea  onChange={(e)=>upDesc(e.target.value,selectedNode.id)}  value={selectedNode.data.description}  className="h-[95px] p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"></textarea>
 
 <br /><br />
 
 <div className="flex flex-col">
 
-<button className="border-[#059669] border-2 bg-[#059669] text-[#fff] w-[90%] p-2 font-[500] rounded-md mt-2 flex justify-center items-center text-sm" onClick={finalSaveChanges}> <FaSave />&nbsp;  Save Changes </button>
+<button className="border-[#059669] border-2 bg-[#059669] text-[#fff] w-[90%] p-2 font-[500] rounded-md mt-2 flex justify-center items-center text-sm" > <FaSave /> &nbsp;  Save Changes </button>
 
-<button className="border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm" > <MdDelete /> &nbsp;Delete Node </button>
+<button className="border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm" > <MdDelete /> &nbsp; Delete Node </button>
 
 </div>
+
 
 </div>
 
