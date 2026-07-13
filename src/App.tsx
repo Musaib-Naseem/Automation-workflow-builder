@@ -101,8 +101,6 @@ target:"3"
 
 
 const updateSelectedNodes=(id:string,label:string)=>{
-
-setNodes(nodes.map((node)=>node.id === id ? {...node,data:{...node.data,label}} : node ));
 setSelectedNode((prev) => {
   if (!prev || prev.id !== id) return prev;
 
@@ -116,6 +114,14 @@ setSelectedNode((prev) => {
   };
 });
 };
+
+
+
+const updateMyNode=(id:string,label:string)=>{
+
+setNodes(nodes.map((node)=>node.id === id ? {...node,data:{...node.data,label}} : node ));
+
+}
 
 console.log(nodes);
 
@@ -190,7 +196,7 @@ a.click();
 
     <div className='w-[25%] z-10 relative'>
 
-    <SettingPanel selectedNode={selectedNode}  updateSelectedNodes={updateSelectedNodes}/>
+    <SettingPanel selectedNode={selectedNode}  setNodes={setNodes} updateSelectedNodes={updateSelectedNodes}/>
 
    </div>
 
