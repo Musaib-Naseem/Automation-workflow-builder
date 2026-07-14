@@ -21,7 +21,7 @@ return(
 
 {
 
-nodes && nodes.map((details)=>{
+nodes.length !==0 ? nodes.map((details)=>{
  
 const config = ConfigNode[details.data.type as keyof typeof ConfigNode];
 
@@ -43,7 +43,7 @@ return(
 
 )
 
-})
+}) : <h2 className="text-[#374151] font-[500]"> No Nodes Available </h2>
 
 }
 

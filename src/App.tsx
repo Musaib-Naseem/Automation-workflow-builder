@@ -166,6 +166,16 @@ setNewUpdateNode((prev)=>prev.filter((data)=>data.id !== id));
 
 }
 
+const deleteAllNodes=():void=>{
+
+setSelectedNode(null);
+setNodes([]);
+setNewUpdateNode([]);
+
+}
+
+
+
 console.log(nodes);
 
 
@@ -215,9 +225,9 @@ a.click();
   <h1 className="text-2xl font-bold flex items-center"> <LuWorkflow style={{ color:"#6040E0"}} size={28} /> &nbsp; Workflow Builder </h1>
   
   <div className="flex">
-  <button style={{ border:"1px solid #D0D0D0"}} className="mr-6 text-sm px-4 py-2 bg-[#ffffff] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#4F33BD] transition"> <MdOutlineDelete  style={{ fontSize:"18px",color:"#374151"}}/> &nbsp;&nbsp;Clear Workflow</button>
+  <button style={{ border:"1px solid #D0D0D0"}} className="mr-6 text-sm px-4 py-2 bg-[#ffffff] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#4F33BD] hover:text-[#fff] transition" onClick={deleteAllNodes}> <MdOutlineDelete  style={{ fontSize:"18px",}}/> &nbsp;&nbsp;Clear Workflow</button>
    
-  <button className="text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition"> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
+  <button className="text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={exportWorkflow}> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
    </div>
    
   </div>
