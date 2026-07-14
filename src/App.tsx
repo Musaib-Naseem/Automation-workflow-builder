@@ -90,7 +90,7 @@ localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 },[nodes])
 
 
-const edges = [
+const [edges,setEdges] = useState([
 
 {
 
@@ -108,8 +108,9 @@ target:"3"
 
 }
 
-];
+]);
 
+console.log(edges);
 
 const updateSelectedNodes=(id:string,label:string)=>{
 setSelectedNode((prev) => {
@@ -163,8 +164,34 @@ setSelectedNode(null);
 
 setNodes((prev)=>prev.filter((data)=>data.id !== id));
 setNewUpdateNode((prev)=>prev.filter((data)=>data.id !== id));
+setEdges((prev)=>prev.filter((edge)=>edge.source !== id && edge.target !== id));
+
+const incoming= edges.find((edge)=>edge.target == id);
+const outgoing = edges.find((edge)=>edge.source == id);
+
+setEdges((prev)=>{
+
+  const filtered = prev.filter((edge)=>edge.source !== id && edge.target !== id);
+
+
+if(incoming && outgoing){
+
+
+filtered.push({
+
+id:`e${incoming?.source}-${outgoing?.target}`,
+source:incoming?.source,
+target:outgoing?.target
+
+});
 
 }
+
+return filtered;
+
+})
+}
+
 
 const deleteAllNodes=():void=>{
 
