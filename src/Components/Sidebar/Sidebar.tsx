@@ -23,10 +23,9 @@ return(
 
 nodes && nodes.map((details)=>{
  
-const config = ConfigNode[details.data.label as keyof typeof ConfigNode];
+const config = ConfigNode[details.data.type as keyof typeof ConfigNode];
 
 const Icon = config && config.icon;
-
 
 return(
 

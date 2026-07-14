@@ -8,15 +8,18 @@ import { MdDelete } from "react-icons/md";
 type settingPanelProps={
 
 selectedNode:WorkFlowMode|null;
-updateSelectedNodes:(id:string,label:string)=>void
+updateSelectedNodes:(id:string,label:string)=>void;
+updateSelectedNodesDisc:(id:string,description:string)=>void;
+updateMyNode:()=>void;
+deleteSelectedNode:(id:string)=>void;
 
 }
 
 
-const SettingPanel=({selectedNode,updateSelectedNodes}:settingPanelProps)=>{
+const SettingPanel=({selectedNode,updateSelectedNodes,updateSelectedNodesDisc,updateMyNode,deleteSelectedNode}:settingPanelProps)=>{
 
 const config = selectedNode
-  ? ConfigNode[selectedNode.data.label as keyof typeof ConfigNode]
+  ? ConfigNode[selectedNode.data.type as keyof typeof ConfigNode]
   : null;
 
 const Icon = config?.icon;
@@ -31,7 +34,7 @@ updateSelectedNodes(id,e);
 
 const upDesc=(e:string,id:string):void=>{
 
-updateSelectedNodes(id,e);
+updateSelectedNodesDisc(id,e);
 
 }
 
@@ -95,7 +98,6 @@ focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 
 <br /><br />
 
-
 <label className="text-sm font-[500]"> Node Description </label>
 
 <br />
@@ -106,12 +108,11 @@ focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 
 <div className="flex flex-col">
 
-<button className="border-[#059669] border-2 bg-[#059669] text-[#fff] w-[90%] p-2 font-[500] rounded-md mt-2 flex justify-center items-center text-sm" > <FaSave /> &nbsp;  Save Changes </button>
+<button className="cursor-pointer border-[#059669] border-2 bg-[#059669] text-[#fff] w-[90%] p-2 font-[500] rounded-md mt-2 flex justify-center items-center text-sm" onClick={updateMyNode}> <FaSave /> &nbsp;  Save Changes </button>
 
-<button className="border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm" > <MdDelete /> &nbsp; Delete Node </button>
+<button className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm" onClick={()=>deleteSelectedNode(selectedNode!.id)}  > <MdDelete /> &nbsp; Delete Node </button>
 
 </div>
-
 
 </div>
 

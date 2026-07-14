@@ -70,6 +70,17 @@ return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 });
 
 
+const [newUpdateNode,setNewUpdateNode] = useState<WorkFlowMode2[]>(()=>{
+
+localStorage.removeItem("workflowNodes");
+
+const savedNodes = localStorage.getItem("workflowNodes");
+
+return savedNodes ? JSON.parse(savedNodes) : defaultNodes
+
+})
+
+
 console.log(nodes);
 
 useEffect(()=>{
@@ -113,13 +124,45 @@ setSelectedNode((prev) => {
     },
   };
 });
+
+setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...node.data,label}} : node ));
+
+};
+
+
+const updateSelectedNodesDisc=(id:string,description:string)=>{
+setSelectedNode((prev) => {
+  if (!prev || prev.id !== id) return prev;
+
+  return {
+    ...prev,
+    data: {
+      ...prev.data,
+      description
+    
+    },
+  };
+});
+
+setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...node.data,description}} : node ));
+
 };
 
 
 
-const updateMyNode=(id:string,label:string)=>{
+const updateMyNode=()=>{
 
-setNodes(nodes.map((node)=>node.id === id ? {...node,data:{...node.data,label}} : node ));
+setNodes(newUpdateNode);
+
+}
+
+
+const deleteSelectedNode=(id:string):void=>{
+
+setSelectedNode(null);
+
+setNodes((prev)=>prev.filter((data)=>data.id !== id));
+setNewUpdateNode((prev)=>prev.filter((data)=>data.id !== id));
 
 }
 
@@ -196,7 +239,7 @@ a.click();
 
     <div className='w-[25%] z-10 relative'>
 
-    <SettingPanel selectedNode={selectedNode}  setNodes={setNodes} updateSelectedNodes={updateSelectedNodes}/>
+    <SettingPanel deleteSelectedNode={deleteSelectedNode} selectedNode={selectedNode}  updateMyNode={updateMyNode} updateSelectedNodes={updateSelectedNodes}  updateSelectedNodesDisc={updateSelectedNodesDisc}/>
 
    </div>
 
