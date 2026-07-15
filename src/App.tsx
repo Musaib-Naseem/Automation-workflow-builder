@@ -7,6 +7,7 @@ import { BiExport } from "react-icons/bi";
 import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
 import { TbWebhook } from "react-icons/tb";
+import { useWorkflowStore } from "./Store/WorkflowStore";
 
 
 
@@ -59,15 +60,20 @@ description:"Let it fullfill the all condition"
 ]
 
 
-const [nodes,setNodes] = useState<WorkFlowMode2[]>(()=>{
+// const [nodes,setNodes] = useState<WorkFlowMode2[]>(()=>{
 
-localStorage.removeItem("workflowNodes");
+// localStorage.removeItem("workflowNodes");
 
-const savedNodes = localStorage.getItem("workflowNodes");
+// const savedNodes = localStorage.getItem("workflowNodes");
 
-return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
+// return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 
-});
+// });
+
+
+const nodes = useWorkflowStore((state)=>state.nodes);
+
+const setNodes = useWorkflowStore((state)=>state.setNodes);
 
 
 const [newUpdateNode,setNewUpdateNode] = useState<WorkFlowMode2[]>(()=>{
@@ -90,27 +96,30 @@ localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 },[nodes])
 
 
-const [edges,setEdges] = useState([
+// const [edges,setEdges] = useState([
 
-{
+// {
 
-id:"e1-2",
-source:"1",
-target:"2"
+// id:"e1-2",
+// source:"1",
+// target:"2"
 
-},
+// },
 
-{
+// {
 
-id:"e2-3",
-source:"2",
-target:"3"
+// id:"e2-3",
+// source:"2",
+// target:"3"
 
-}
+// }
 
-]);
+// ]);
 
-console.log(edges);
+
+const edges = useWorkflowStore((state)=>state.edges);
+const setEdges = useWorkflowStore((state)=>state.setEdges);
+
 
 const updateSelectedNodes=(id:string,label:string)=>{
 setSelectedNode((prev) => {
@@ -162,34 +171,55 @@ const deleteSelectedNode=(id:string):void=>{
 
 setSelectedNode(null);
 
-setNodes((prev)=>prev.filter((data)=>data.id !== id));
+setNodes(nodes.filter((data)=>data.id !== id));
 setNewUpdateNode((prev)=>prev.filter((data)=>data.id !== id));
-setEdges((prev)=>prev.filter((edge)=>edge.source !== id && edge.target !== id));
+// setEdges((prev)=>prev.filter((edge)=>edge.source !== id && edge.target !== id));
+
+setEdges(edges.filter((edge)=>edge.source !== id && edge.target !== id));
+
 
 const incoming= edges.find((edge)=>edge.target == id);
 const outgoing = edges.find((edge)=>edge.source == id);
 
-setEdges((prev)=>{
-
-  const filtered = prev.filter((edge)=>edge.source !== id && edge.target !== id);
 
 
-if(incoming && outgoing){
+// setEdges((prev)=>{
+
+//   const filtered = prev.filter((edge)=>edge.source !== id && edge.target !== id);
 
 
-filtered.push({
+// if(incoming && outgoing){
 
-id:`e${incoming?.source}-${outgoing?.target}`,
-source:incoming?.source,
-target:outgoing?.target
 
-});
+// filtered.push({
 
+// id:`e${incoming?.source}-${outgoing?.target}`,
+// source:incoming?.source,
+// target:outgoing?.target
+
+// });
+
+// }
+
+// return filtered;
+
+// })
+
+
+const filtered = edges.filter(
+  (edge) => edge.source !== id && edge.target !== id
+);
+
+if (incoming && outgoing) {
+  filtered.push({
+    id: `e${incoming.source}-${outgoing.target}`,
+    source: incoming.source,
+    target: outgoing.target,
+  });
 }
 
-return filtered;
+setEdges(filtered);
 
-})
 }
 
 

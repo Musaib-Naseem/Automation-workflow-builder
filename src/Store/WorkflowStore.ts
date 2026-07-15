@@ -1,17 +1,103 @@
-import { create } from "zustand";
+import { create } from 'zustand';
+import type { WorkFlowMode2 } from '../Types_ts/node';
+import type { Edge } from 'reactflow';
+
+const defaultEdges:Edge[] = [
+
+{
+
+id:"e1-2",
+source:"1",
+target:"2"
+
+},
+
+{
+
+id:"e2-3",
+source:"2",
+target:"3"
+
+}
+
+];
+
+
+const defaultNodes:WorkFlowMode2[] = [
+
+{
+
+id:"1",
+position:{x:100,y:100},
+data:{  
+label:"Email",
+type:"Email",
+description:"Send the Welcome Email to the User"
+
+},
+
+},
+
+{
+
+id:"2",
+position:{x:300,y:100},
+data:{
+label:"Delay",
+type:"Delay",
+description:"Do the delay of 5 mins"
+
+},
+
+
+},
+
+{
+
+id:"3",
+position:{x:500,y:100},
+data:{
+label:"Condition",
+type:"Condition",
+description:"Let it fullfill the all condition"
+
+},
+
+}
+
+]
 
 type WorkflowStore = {
- 
-  selectedNode: Node | null;
 
-  setSelectedNode: (node: Node | null) => void;
-};
+nodes : WorkFlowMode2[],
+edges : Edge[]
+setNodes : (nodes:WorkFlowMode2[])=>void
+setEdges : (edges:Edge[])=>void
 
-export const useWorkflowStore = create<WorkflowStore>((set) => ({
-  // State
-  nodes: [],
-  edges: [],
-  selectedNode: null,
+}
 
-  setSelectedNode: (node) => set({ selectedNode: node }),
+
+export const useWorkflowStore = create<WorkflowStore>((set)=>({
+
+nodes:(()=>{
+
+const savedNodes = localStorage.getItem("workflowNodes");
+
+return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
+
+})(),
+
+edges : defaultEdges,
+
+setNodes:(nodes)=>{
+
+localStorage.setItem("workflowNodes",JSON.stringify(nodes));
+
+set({nodes})
+
+},
+
+setEdges:(edges)=>set({edges})
+
+
 }));
