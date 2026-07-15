@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { WorkFlowMode2 } from '../Types_ts/node';
+import type { WorkFlowMode2,WorkFlowMode } from '../Types_ts/node';
 import type { Edge } from 'reactflow';
 
 const defaultEdges:Edge[] = [
@@ -70,9 +70,13 @@ description:"Let it fullfill the all condition"
 type WorkflowStore = {
 
 nodes : WorkFlowMode2[],
-edges : Edge[]
-setNodes : (nodes:WorkFlowMode2[])=>void
-setEdges : (edges:Edge[])=>void
+edges : Edge[],
+selectedNode:WorkFlowMode | null,
+newUpdateNode:WorkFlowMode2[],
+setNodes : (nodes:WorkFlowMode2[])=>void,
+setEdges : (edges:Edge[])=>void,
+setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
+setNewUpdateNode: (newUpdateNode:WorkFlowMode2[])=>void
 
 }
 
@@ -89,6 +93,16 @@ return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 
 edges : defaultEdges,
 
+selectedNode:null,
+
+newUpdateNode:(()=>{
+
+const savedNodes = localStorage.getItem("workflowNodes");
+
+return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
+
+})(),
+
 setNodes:(nodes)=>{
 
 localStorage.setItem("workflowNodes",JSON.stringify(nodes));
@@ -97,7 +111,16 @@ set({nodes})
 
 },
 
-setEdges:(edges)=>set({edges})
+setEdges:(edges)=>set({edges}),
+
+setSelectedNode:(selectedNode)=>set({selectedNode}),
+
+setNewUpdateNode : (newUpdateNode)=>{
+
+localStorage.setItem("workflowNodes",JSON.stringify(newUpdateNode));
+set({newUpdateNode})
+
+},
 
 
 }));

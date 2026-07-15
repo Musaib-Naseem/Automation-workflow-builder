@@ -13,7 +13,11 @@ import { useWorkflowStore } from "./Store/WorkflowStore";
 
 function App() {
 
-const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
+// const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
+
+const selectedNode = useWorkflowStore((state)=>state.selectedNode);
+
+const setSelectedNode = useWorkflowStore((state)=>state.setSelectedNode);
 
 const defaultNodes:WorkFlowMode2[] = [
 
@@ -60,31 +64,24 @@ description:"Let it fullfill the all condition"
 ]
 
 
-// const [nodes,setNodes] = useState<WorkFlowMode2[]>(()=>{
+const nodes = useWorkflowStore((state)=>state.nodes);
+
+const setNodes = useWorkflowStore((state)=>state.setNodes);
+
+const newUpdateNode = useWorkflowStore((state)=>state.nodes);
+
+const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
+
+
+// const [newUpdateNode,setNewUpdateNode] = useState<WorkFlowMode2[]>(()=>{
 
 // localStorage.removeItem("workflowNodes");
 
 // const savedNodes = localStorage.getItem("workflowNodes");
 
-// return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
+// return savedNodes ? JSON.parse(savedNodes) : defaultNodes
 
-// });
-
-
-const nodes = useWorkflowStore((state)=>state.nodes);
-
-const setNodes = useWorkflowStore((state)=>state.setNodes);
-
-
-const [newUpdateNode,setNewUpdateNode] = useState<WorkFlowMode2[]>(()=>{
-
-localStorage.removeItem("workflowNodes");
-
-const savedNodes = localStorage.getItem("workflowNodes");
-
-return savedNodes ? JSON.parse(savedNodes) : defaultNodes
-
-})
+// })
 
 
 console.log(nodes);
@@ -96,43 +93,21 @@ localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 },[nodes])
 
 
-// const [edges,setEdges] = useState([
-
-// {
-
-// id:"e1-2",
-// source:"1",
-// target:"2"
-
-// },
-
-// {
-
-// id:"e2-3",
-// source:"2",
-// target:"3"
-
-// }
-
-// ]);
-
 
 const edges = useWorkflowStore((state)=>state.edges);
 const setEdges = useWorkflowStore((state)=>state.setEdges);
 
 
 const updateSelectedNodes=(id:string,label:string)=>{
-setSelectedNode((prev) => {
-  if (!prev || prev.id !== id) return prev;
 
-  return {
-    ...prev,
-    data: {
-      ...prev.data,
-      label,
-    
-    },
-  };
+if (!selectedNode || selectedNode.id !== id) return;
+
+setSelectedNode({
+  ...selectedNode,
+  data: {
+    ...selectedNode.data,
+    label,
+  },
 });
 
 setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...node.data,label}} : node ));
@@ -141,18 +116,18 @@ setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...no
 
 
 const updateSelectedNodesDisc=(id:string,description:string)=>{
-setSelectedNode((prev) => {
-  if (!prev || prev.id !== id) return prev;
 
-  return {
-    ...prev,
+  if (!selectedNode || selectedNode.id !== id) return;
+
+ setSelectedNode(
+  {
+    ...selectedNode,
     data: {
-      ...prev.data,
+      ...selectedNode.data,
       description
     
-    },
-  };
-});
+    }}
+ );
 
 setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...node.data,description}} : node ));
 
@@ -172,39 +147,12 @@ const deleteSelectedNode=(id:string):void=>{
 setSelectedNode(null);
 
 setNodes(nodes.filter((data)=>data.id !== id));
-setNewUpdateNode((prev)=>prev.filter((data)=>data.id !== id));
-// setEdges((prev)=>prev.filter((edge)=>edge.source !== id && edge.target !== id));
-
+setNewUpdateNode(newUpdateNode.filter((data)=>data.id !== id));
 setEdges(edges.filter((edge)=>edge.source !== id && edge.target !== id));
 
 
 const incoming= edges.find((edge)=>edge.target == id);
 const outgoing = edges.find((edge)=>edge.source == id);
-
-
-
-// setEdges((prev)=>{
-
-//   const filtered = prev.filter((edge)=>edge.source !== id && edge.target !== id);
-
-
-// if(incoming && outgoing){
-
-
-// filtered.push({
-
-// id:`e${incoming?.source}-${outgoing?.target}`,
-// source:incoming?.source,
-// target:outgoing?.target
-
-// });
-
-// }
-
-// return filtered;
-
-// })
-
 
 const filtered = edges.filter(
   (edge) => edge.source !== id && edge.target !== id
