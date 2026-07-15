@@ -16,6 +16,7 @@ const Canvas=({nodes,edges,setSelectedNode}:CanvasProps)=>{
 return(
 
 <div style={{ width:"100vw" , height:"100vh"}}>
+
 <ReactFlow nodes={nodes}  edges={edges}  onNodeClick={ (_,node)=>{ setSelectedNode(node) }}/>
 </div>
 
