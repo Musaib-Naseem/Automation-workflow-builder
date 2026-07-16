@@ -67,21 +67,33 @@ description:"Let it fullfill the all condition"
 
 ]
 
+type WorkflowSnap={
+
+nodes:WorkFlowMode2[],
+edges:Edge[]
+
+}
+
+
 type WorkflowStore = {
 
 nodes : WorkFlowMode2[],
 edges : Edge[],
 selectedNode:WorkFlowMode | null,
 newUpdateNode:WorkFlowMode2[],
+history:WorkflowSnap[],
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
-setNewUpdateNode: (newUpdateNode:WorkFlowMode2[])=>void
+setNewUpdateNode: (newUpdateNode:WorkFlowMode2[])=>void,
+saveHistory:()=>void,
+undo:()=>void
 
 }
 
 
-export const useWorkflowStore = create<WorkflowStore>((set)=>({
+
+export const useWorkflowStore = create<WorkflowStore>((set,get)=>({
 
 nodes:(()=>{
 
@@ -107,6 +119,8 @@ return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 
 })(),
 
+history:[],
+
 setNodes:(nodes)=>{
 
 localStorage.setItem("workflowNodes",JSON.stringify(nodes));
@@ -125,6 +139,50 @@ localStorage.setItem("workflowNodes",JSON.stringify(newUpdateNode));
 set({newUpdateNode})
 
 },
+
+saveHistory:()=>{
+
+const { nodes,edges,history} = get();
+
+set({
+
+history:[
+
+...history,
+
+{
+
+nodes:structuredClone(nodes),
+edges:structuredClone(edges)
+
+}
+
+]
+
+
+})
+
+
+},
+
+undo:()=>{
+
+const {history} = get();
+
+if(history.length == 0) return;
+
+const lastSnapShot = history[history.length-1]!;
+
+set({
+
+nodes:lastSnapShot.nodes,
+edges:lastSnapShot?.edges,
+history:history.slice(0,history.length-1)
+
+
+})
+
+}
 
 
 }));

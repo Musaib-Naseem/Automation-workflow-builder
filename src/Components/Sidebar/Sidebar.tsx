@@ -1,6 +1,10 @@
 import React from "react";
 import type { WorkFlowMode2 } from "../../Types_ts/node";
 import { ConfigNode } from "../../Types_ts/ConfigNode";
+import { IoArrowUndo } from "react-icons/io5";
+import { IoArrowRedo } from "react-icons/io5";
+import { useWorkflowStore } from "../../Store/WorkflowStore";
+
 
 type SidebarProps={
 
@@ -10,6 +14,9 @@ nodes:WorkFlowMode2[]
 
 
 const Sidebar=({nodes}:SidebarProps)=>{
+
+const Undo = useWorkflowStore((state)=>state.undo);
+
 
 return(
 
@@ -37,7 +44,7 @@ return(
 
 </div>
 
-<span className="font-medium text-gray-800 text-sm">{details.data.label}</span>
+<span className="font-medium text-gray-800 text-sm">{details.data.type}</span>
 
 </div>
 
@@ -47,6 +54,15 @@ return(
 
 }
 
+</div>
+
+<div className="pt-8 flex flex-col pr-16 ">
+
+<button className="h-8 w-auto p-1 px-4 bg-yellow-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer" onClick={Undo} > <IoArrowUndo className="mr-1"/>
+Undo &nbsp; &nbsp; </button>
+&nbsp;
+<button className="h-8 w-auto p-1 px-4 bg-blue-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer"> <IoArrowRedo className="mr-1"/>
+Redo &nbsp; &nbsp; </button>
 </div>
 
 </div>

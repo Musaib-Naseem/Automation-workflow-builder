@@ -19,6 +19,12 @@ const selectedNode = useWorkflowStore((state)=>state.selectedNode);
 
 const setSelectedNode = useWorkflowStore((state)=>state.setSelectedNode);
 
+const history = useWorkflowStore((state)=>state.history);
+
+const saveHistory = useWorkflowStore((state)=>state.saveHistory);
+
+console.log(history);
+
 const defaultNodes:WorkFlowMode2[] = [
 
 {
@@ -117,6 +123,7 @@ setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...no
 
 const updateSelectedNodesDisc=(id:string,description:string)=>{
 
+
  if (!selectedNode || selectedNode.id !== id) return;
 
  setSelectedNode(
@@ -134,15 +141,17 @@ setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...no
 };
 
 
-
 const updateMyNode=()=>{
 
+saveHistory();
 setNodes(newUpdateNode);
 
 }
 
 
 const deleteSelectedNode=(id:string):void=>{
+
+saveHistory();
 
 setSelectedNode(null);
 
@@ -172,6 +181,8 @@ setEdges(filtered);
 
 
 const deleteAllNodes=():void=>{
+
+saveHistory();
 
 setSelectedNode(null);
 setNodes([]);
