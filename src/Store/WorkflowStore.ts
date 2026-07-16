@@ -85,6 +85,8 @@ export const useWorkflowStore = create<WorkflowStore>((set)=>({
 
 nodes:(()=>{
 
+localStorage.removeItem("workflowNodes");
+
 const savedNodes = localStorage.getItem("workflowNodes");
 
 return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
@@ -96,6 +98,8 @@ edges : defaultEdges,
 selectedNode:null,
 
 newUpdateNode:(()=>{
+
+localStorage.removeItem("workflowNodes");
 
 const savedNodes = localStorage.getItem("workflowNodes");
 

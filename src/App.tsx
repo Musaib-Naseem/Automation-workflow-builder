@@ -68,7 +68,7 @@ const nodes = useWorkflowStore((state)=>state.nodes);
 
 const setNodes = useWorkflowStore((state)=>state.setNodes);
 
-const newUpdateNode = useWorkflowStore((state)=>state.nodes);
+const newUpdateNode = useWorkflowStore((state)=>state.newUpdateNode);
 
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
 
@@ -117,7 +117,7 @@ setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...no
 
 const updateSelectedNodesDisc=(id:string,description:string)=>{
 
-  if (!selectedNode || selectedNode.id !== id) return;
+ if (!selectedNode || selectedNode.id !== id) return;
 
  setSelectedNode(
   {
