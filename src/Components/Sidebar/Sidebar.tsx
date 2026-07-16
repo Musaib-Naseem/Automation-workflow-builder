@@ -17,6 +17,8 @@ const Sidebar=({nodes}:SidebarProps)=>{
 
 const Undo = useWorkflowStore((state)=>state.undo);
 
+const Redo = useWorkflowStore((state)=>state.redo);
+
 
 return(
 
@@ -61,7 +63,7 @@ return(
 <button className="h-8 w-auto p-1 px-4 bg-yellow-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer" onClick={Undo} > <IoArrowUndo className="mr-1"/>
 Undo &nbsp; &nbsp; </button>
 &nbsp;
-<button className="h-8 w-auto p-1 px-4 bg-blue-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer"> <IoArrowRedo className="mr-1"/>
+<button className="h-8 w-auto p-1 px-4 bg-blue-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer" onClick={Redo}> <IoArrowRedo className="mr-1"/>
 Redo &nbsp; &nbsp; </button>
 </div>
 

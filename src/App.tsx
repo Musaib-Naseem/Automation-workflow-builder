@@ -23,6 +23,8 @@ const history = useWorkflowStore((state)=>state.history);
 
 const saveHistory = useWorkflowStore((state)=>state.saveHistory);
 
+const saveRedoCont = useWorkflowStore((state)=>state.saveRedoCont);
+
 console.log(history);
 
 const defaultNodes:WorkFlowMode2[] = [

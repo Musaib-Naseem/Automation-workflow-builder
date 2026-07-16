@@ -82,12 +82,15 @@ edges : Edge[],
 selectedNode:WorkFlowMode | null,
 newUpdateNode:WorkFlowMode2[],
 history:WorkflowSnap[],
+RedoContainer:WorkflowSnap[],
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
 setNewUpdateNode: (newUpdateNode:WorkFlowMode2[])=>void,
 saveHistory:()=>void,
-undo:()=>void
+saveRedoCont:()=>void,
+undo:()=>void,
+redo:()=>void
 
 }
 
@@ -120,6 +123,8 @@ return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 })(),
 
 history:[],
+
+RedoContainer:[],
 
 setNodes:(nodes)=>{
 
@@ -159,13 +164,41 @@ edges:structuredClone(edges)
 
 ]
 
+})
+
+},
+
+
+saveRedoCont:()=>{
+
+const {nodes,edges,RedoContainer} = get();
+
+set({
+
+RedoContainer:[
+
+...RedoContainer,
+
+{
+
+nodes:structuredClone(nodes),
+edges:structuredClone(edges)
+
+}
+
+]
 
 })
 
 
 },
 
+
 undo:()=>{
+
+const {saveRedoCont} = get();
+
+saveRedoCont();
 
 const {history} = get();
 
@@ -179,8 +212,28 @@ nodes:lastSnapShot.nodes,
 edges:lastSnapShot?.edges,
 history:history.slice(0,history.length-1)
 
+})
+
+},
+
+redo:()=>{
+
+const {RedoContainer} = get();
+
+if(RedoContainer.length == 0) return;
+
+const lastSnapRedo = RedoContainer[RedoContainer.length-1]!;
+
+set({
+
+nodes:lastSnapRedo.nodes,
+edges:lastSnapRedo.edges,
+RedoContainer:RedoContainer.slice(0,RedoContainer.length-1),
+
 
 })
+
+
 
 }
 
