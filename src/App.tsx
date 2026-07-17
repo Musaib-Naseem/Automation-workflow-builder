@@ -25,7 +25,52 @@ const saveHistory = useWorkflowStore((state)=>state.saveHistory);
 
 const saveRedoCont = useWorkflowStore((state)=>state.saveRedoCont);
 
-console.log(history);
+
+const Undo = useWorkflowStore((state)=>state.undo);
+
+const Redo = useWorkflowStore((state)=>state.redo);
+
+
+const handleKeyDown = (event:KeyboardEvent)=>{
+
+const target = event.target as HTMLElement;
+
+if(
+
+target.tagName == "INPUT" || target.tagName == "TEXTAREA" || target.isContentEditable
+
+) {
+
+return;
+
+}
+
+
+
+
+
+if(event.ctrlKey && event.key.toLowerCase() == "z"){
+
+event.preventDefault();
+
+if(event.shiftKey){
+
+Redo();
+
+}
+
+else{
+
+Undo();
+
+}
+
+
+
+}
+
+}
+
 
 const defaultNodes:WorkFlowMode2[] = [
 
@@ -97,6 +142,14 @@ console.log(nodes);
 useEffect(()=>{
 
 localStorage.setItem("workflowNodes",JSON.stringify(nodes));
+
+window.addEventListener("keydown",handleKeyDown);
+
+return ()=>{
+
+window.removeEventListener("keydown",handleKeyDown);
+
+}
 
 },[nodes])
 

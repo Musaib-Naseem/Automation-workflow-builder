@@ -19,6 +19,10 @@ const Undo = useWorkflowStore((state)=>state.undo);
 
 const Redo = useWorkflowStore((state)=>state.redo);
 
+const history = useWorkflowStore((state)=>state.history);
+
+const redoContainer = useWorkflowStore((state)=>state.RedoContainer);
+
 
 return(
 
@@ -56,14 +60,15 @@ return(
 
 }
 
+
 </div>
 
 <div className="pt-8 flex flex-col pr-16 ">
 
-<button className="h-8 w-auto p-1 px-4 bg-yellow-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer" onClick={Undo} > <IoArrowUndo className="mr-1"/>
+<button className={`h-8 w-auto p-1 px-4 ${history.length == 0 ? "bg-gray-400 text-[#fff] cursor-disabled" : "bg-yellow-400 text-[#fff] cursor-pointer" } rounded-sm font-bold text-sm flex justify-center items-center `} onClick={Undo} > <IoArrowUndo className="mr-1"/>
 Undo &nbsp; &nbsp; </button>
 &nbsp;
-<button className="h-8 w-auto p-1 px-4 bg-blue-400 text-[#fff] rounded-sm font-bold text-sm flex justify-center items-center cursor-pointer" onClick={Redo}> <IoArrowRedo className="mr-1"/>
+<button className={`h-8 w-auto p-1 px-4 ${redoContainer.length == 0 ? "bg-gray-400 text-[#fff] cursor-disabled" : "bg-blue-400 text-[#fff] cursor-pointer" } rounded-sm font-bold text-sm flex justify-center items-center `} onClick={Redo}> <IoArrowRedo className="mr-1"/>
 Redo &nbsp; &nbsp; </button>
 </div>
 
