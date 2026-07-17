@@ -6,7 +6,7 @@ type CanvasProps={
 
 nodes:WorkFlowMode[];
 edges:nodeProps[];
-setSelectedNode:(node:WorkFlowMode)=>void
+setSelectedNode:(node:WorkFlowMode)=>void,
 
 }
 

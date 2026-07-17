@@ -36,6 +36,10 @@ description:"Send the Welcome Email to the User"
 
 },
 
+style:{
+
+}
+
 },
 
 {
@@ -46,8 +50,10 @@ data:{
 label:"Delay",
 type:"Delay",
 description:"Do the delay of 5 mins"
-
 },
+style:{
+    
+}
 
 
 },
@@ -62,8 +68,31 @@ type:"Condition",
 description:"Let it fullfill the all condition"
 
 },
-
+style:{
+    
 }
+
+},
+
+
+{
+
+id:"4",
+position:{x:100,y:200},
+data:{
+label:"SMS",
+type:"SMS",
+description:"Send the message in sms format"
+
+},
+style:{
+    
+}
+
+},
+
+
+
 
 ]
 

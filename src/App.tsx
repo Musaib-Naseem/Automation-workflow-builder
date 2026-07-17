@@ -27,6 +27,9 @@ const saveHistory = useWorkflowStore((state)=>state.saveHistory);
 
 const saveRedoCont = useWorkflowStore((state)=>state.saveRedoCont);
 
+const edges = useWorkflowStore((state)=>state.edges);
+const setEdges = useWorkflowStore((state)=>state.setEdges);
+
 
 
 const setShowLabelError = useWorkflowStore((state)=>state.setShowLabelError);
@@ -82,49 +85,50 @@ Undo();
 }
 
 
-const defaultNodes:WorkFlowMode2[] = [
+// const defaultNodes:WorkFlowMode2[] = [
 
-{
+// {
 
-id:"1",
-position:{x:100,y:100},
-data:{  
-label:"Email",
-type:"Email",
-description:"Send the Welcome Email to the User"
+// id:"1",
+// position:{x:100,y:100},
+// data:{  
+// label:"Email",
+// type:"Email",
+// description:"Send the Welcome Email to the User"
 
-},
+// },
 
-},
+// },
 
-{
+// {
 
-id:"2",
-position:{x:300,y:100},
-data:{
-label:"Delay",
-type:"Delay",
-description:"Do the delay of 5 mins"
+// id:"2",
+// position:{x:300,y:100},
+// data:{
+// label:"Delay",
+// type:"Delay",
+// description:"Do the delay of 5 mins"
 
-},
+// },
 
 
-},
+// },
 
-{
+// {
 
-id:"3",
-position:{x:500,y:100},
-data:{
-label:"Condition",
-type:"Condition",
-description:"Let it fullfill the all condition"
+// id:"3",
+// position:{x:500,y:100},
+// data:{
+// label:"Condition",
+// type:"Condition",
+// description:"Let it fullfill the all condition"
 
-},
+// },
 
-}
 
-]
+// }
+
+// ]
 
 
 const nodes = useWorkflowStore((state)=>state.nodes);
@@ -136,9 +140,81 @@ const newUpdateNode = useWorkflowStore((state)=>state.newUpdateNode);
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
 
 
+const disconnectedNodes=()=>{
+
+const connectedNodeIds = new Set<string>();
+
+edges.forEach((edge)=>{
+
+connectedNodeIds.add(edge.source);
+connectedNodeIds.add(edge.target);
+
+});
+
+
+const myDisconnectedNotes = nodes.filter((node)=>!connectedNodeIds.has(node.id));
+
+if(myDisconnectedNotes.length > 0){
+
+return{
+
+valid:false,
+message:`${myDisconnectedNotes.length} disconnected node(s) found`,
+disconnectedId:myDisconnectedNotes[0]
+
+}
+
+}
+
+return{
+
+valid:true,
+message:"All nodes are connected"
+
+}
+
+
+// const labels = myDisconnectedNotes.map((node)=>node.data.label);
+
+// return{
+
+// valid:false,
+// message:`Disconnected Nodes : ${labels.join(", ")}`
+
+// }
+
+
+}
+
+
+const getDisconnectedId = disconnectedNodes();
+
+console.log(getDisconnectedId);
+
+
 console.log(nodes);
 
 useEffect(()=>{
+
+const updatedNodes = nodes.map((node)=>
+
+node.id === getDisconnectedId.disconnectedId?.id ? {
+
+...node,
+style:{
+
+...node.style,
+          border: "1px solid red",
+          // borderRadius: "8px",
+          // boxShadow: "0 0 0 2px red",
+
+}
+
+} : node
+
+);
+
+setNodes(updatedNodes);
 
 localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 
@@ -150,12 +226,11 @@ window.removeEventListener("keydown",handleKeyDown);
 
 }
 
-},[nodes])
+
+},[])
 
 
 
-const edges = useWorkflowStore((state)=>state.edges);
-const setEdges = useWorkflowStore((state)=>state.setEdges);
 
 
 const updateSelectedNodes=(id:string,label:string)=>{
@@ -255,8 +330,6 @@ return;
 
 }
 
-
-
 if(selectedNode?.data.description.trim() == ""){
 setShowDescError(true);
 return;
@@ -292,10 +365,11 @@ setNodes(newUpdateNode);
 
 }
 
-
-
-
 }
+
+
+
+
 
 
 
@@ -419,7 +493,7 @@ toast.success(`File is Downloaded`)
 
     <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0"}}>
 
-  <Canvas nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
+  <Canvas  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
 

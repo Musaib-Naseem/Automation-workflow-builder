@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 export type WorkFlowMode2={
 
 id:string,
@@ -6,7 +8,8 @@ data:{
 label:string,
 type:string,
 description:string
-}
+},
+style?: CSSProperties;
 
 
 }
@@ -15,7 +18,8 @@ export type WorkFlowMode={
 
 id:string,
 position:{x:number,y:number},
-data:{label:string,type:string,description:string}
+data:{label:string,type:string,description:string},
+style?: CSSProperties;
 
 }
 
@@ -26,6 +30,9 @@ source:string;
 target:string
 
 }
+
+
+
 
 export type NodeConfigType = {
 
