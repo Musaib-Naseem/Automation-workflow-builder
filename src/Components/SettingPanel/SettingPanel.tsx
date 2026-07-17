@@ -3,6 +3,7 @@ import type { WorkFlowMode } from "../../Types_ts/node";
 import { ConfigNode } from "../../Types_ts/ConfigNode";
 import { FaSave } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useWorkflowStore } from "../../Store/WorkflowStore";
 
 
 type settingPanelProps={
@@ -37,6 +38,11 @@ const upDesc=(e:string,id:string):void=>{
 updateSelectedNodesDisc(id,e);
 
 }
+
+
+const showLabelError = useWorkflowStore((state)=>state.showLabelError);
+
+const showDescError = useWorkflowStore((state)=>state.showDescError);
 
 
 return(
@@ -82,6 +88,7 @@ selectedNode && (
     readOnly
     className="cursor-not-allowed flex-1 p-2 outline-none bg-transparent"
   />
+  
 </div>
 
 <br />
@@ -95,6 +102,7 @@ selectedNode && (
 value={selectedNode.data.label} 
 className="p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition 
 focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
+{showLabelError && <span className="text-red-600 text-sm"> *Label can't be empty </span>}
 
 <br /><br />
 
@@ -103,6 +111,7 @@ focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 <br />
 
 <textarea  onChange={(e)=>upDesc(e.target.value,selectedNode.id)}  value={selectedNode.data.description}  className="h-[95px] p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"></textarea>
+{showDescError && <span className="text-red-500 text-sm"> *Description can't be empty </span>}
 
 <br /><br />
 

@@ -83,6 +83,8 @@ selectedNode:WorkFlowMode | null,
 newUpdateNode:WorkFlowMode2[],
 history:WorkflowSnap[],
 RedoContainer:WorkflowSnap[],
+showLabelError:boolean,
+showDescError:boolean,
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
@@ -90,7 +92,9 @@ setNewUpdateNode: (newUpdateNode:WorkFlowMode2[])=>void,
 saveHistory:()=>void,
 saveRedoCont:()=>void,
 undo:()=>void,
-redo:()=>void
+redo:()=>void,
+setShowLabelError:(showLabelError:boolean)=>void,
+setShowDescError:(showDescError:boolean)=>void
 
 }
 
@@ -125,6 +129,10 @@ return savedNodes ? JSON.parse(savedNodes) : defaultNodes;
 history:[],
 
 RedoContainer:[],
+
+showLabelError:false,
+
+showDescError:false,
 
 setNodes:(nodes)=>{
 
@@ -200,16 +208,19 @@ const {saveRedoCont} = get();
 
 saveRedoCont();
 
-const {history} = get();
+const {history,selectedNode} = get();
 
 if(history.length == 0) return;
 
 const lastSnapShot = history[history.length-1]!;
 
+const restoredSelectedNode = selectedNode ? lastSnapShot.nodes.find((node)=>node.id == selectedNode.id ) ?? null : null;
+
 set({
 
 nodes:lastSnapShot.nodes,
 edges:lastSnapShot?.edges,
+selectedNode:restoredSelectedNode,
 history:history.slice(0,history.length-1)
 
 })
@@ -230,12 +241,13 @@ nodes:lastSnapRedo.nodes,
 edges:lastSnapRedo.edges,
 RedoContainer:RedoContainer.slice(0,RedoContainer.length-1),
 
-
 })
 
+},
 
+setShowLabelError:(showLabelError:boolean)=>set({showLabelError}),
 
-}
+setShowDescError:(showDescError:boolean)=>set({showDescError})
 
 
 }));

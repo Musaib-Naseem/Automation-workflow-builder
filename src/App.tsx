@@ -26,6 +26,12 @@ const saveHistory = useWorkflowStore((state)=>state.saveHistory);
 const saveRedoCont = useWorkflowStore((state)=>state.saveRedoCont);
 
 
+
+const setShowLabelError = useWorkflowStore((state)=>state.setShowLabelError);
+
+const setShowDescError = useWorkflowStore((state)=>state.setShowDescError);
+
+
 const Undo = useWorkflowStore((state)=>state.undo);
 
 const Redo = useWorkflowStore((state)=>state.redo);
@@ -163,6 +169,7 @@ const updateSelectedNodes=(id:string,label:string)=>{
 
 if (!selectedNode || selectedNode.id !== id) return;
 
+
 setSelectedNode({
   ...selectedNode,
   data: {
@@ -197,7 +204,21 @@ setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...no
 
 
 const updateMyNode=()=>{
+ 
+if(selectedNode?.data.label.trim() == ""){
+setShowLabelError(true);
+return;
 
+}
+
+if(selectedNode?.data.description.trim() == ""){
+setShowDescError(true);
+return;
+
+}
+
+setShowLabelError(false);
+setShowDescError(false);
 saveHistory();
 setNodes(newUpdateNode);
 
