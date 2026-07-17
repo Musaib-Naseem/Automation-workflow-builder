@@ -8,7 +8,9 @@ import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
 import { TbWebhook } from "react-icons/tb";
 import { useWorkflowStore } from "./Store/WorkflowStore";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/ReactToastify.css";
+import {toast} from "react-toastify";
 
 
 function App() {
@@ -194,6 +196,57 @@ setNewUpdateNode(newUpdateNode.map((node)=>node.id === id ? {...node,data:{...no
 };
 
 
+
+const validateWorkflow=()=>{
+
+if(nodes.length == 0){
+
+return{
+
+valid:false,
+message:"Workflow is empty"
+
+}
+
+}
+
+
+for(const node of nodes){
+
+if(!node.data.label.trim()){
+
+return{
+
+valid:false,
+message:`${node.data.type} node has empty label`
+
+}
+
+}
+
+if(!node.data.description.trim()){
+
+return{
+
+valid:false,
+message:`${node.id} has empty description`
+
+}
+
+}
+
+}
+
+return{
+
+valid : true,
+message:"Workflow is valid"
+
+}
+
+
+}
+
 const updateMyNode=()=>{
  
 if(selectedNode?.data.label.trim() == ""){
@@ -245,6 +298,7 @@ setNodes(newUpdateNode);
 }
 
 
+
 const deleteSelectedNode=(id:string):void=>{
 
 saveHistory();
@@ -287,11 +341,19 @@ setNewUpdateNode([]);
 }
 
 
-
 console.log(nodes);
 
 
 const exportWorkflow=()=>{
+
+const isValid = validateWorkflow();
+
+if(!isValid.valid){
+
+toast.error(`${isValid.message}`)
+return;
+
+}
 
 const workflow={
 
@@ -320,7 +382,7 @@ const a = document.createElement("a");
 a.href = url;
 a.download = "workflow.json";
 a.click();
-
+toast.success(`File is Downloaded`)
 
 }
 
@@ -331,6 +393,8 @@ a.click();
 
 
    <div style={{ backgroundColor:"#ffffff"}} className="overflow-hidden" >
+
+   <ToastContainer position="top-right" autoClose={3000}  theme="colored" />
 
    <div style={{ borderBottom:"1px solid #D0D0D0"}} className='h-20 flex items-center p-2 px-10 py-2 justify-between'>
 
