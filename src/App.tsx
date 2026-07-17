@@ -31,6 +31,8 @@ const setShowLabelError = useWorkflowStore((state)=>state.setShowLabelError);
 
 const setShowDescError = useWorkflowStore((state)=>state.setShowDescError);
 
+const setShowDuplicateError = useWorkflowStore((state)=>state.setShowDuplicateError);
+
 
 const Undo = useWorkflowStore((state)=>state.undo);
 
@@ -132,17 +134,6 @@ const newUpdateNode = useWorkflowStore((state)=>state.newUpdateNode);
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
 
 
-// const [newUpdateNode,setNewUpdateNode] = useState<WorkFlowMode2[]>(()=>{
-
-// localStorage.removeItem("workflowNodes");
-
-// const savedNodes = localStorage.getItem("workflowNodes");
-
-// return savedNodes ? JSON.parse(savedNodes) : defaultNodes
-
-// })
-
-
 console.log(nodes);
 
 useEffect(()=>{
@@ -211,16 +202,45 @@ return;
 
 }
 
+
+
 if(selectedNode?.data.description.trim() == ""){
 setShowDescError(true);
 return;
 
 }
 
+
+const isDuplicate = newUpdateNode.find((myData)=>{
+
+return(
+
+selectedNode?.id !== myData.id && myData?.data?.label.trim() == selectedNode?.data?.label 
+
+)
+
+});
+
+
+if(isDuplicate){
+
+setShowDuplicateError(true);
+return;
+
+}
+
+else{
+
 setShowLabelError(false);
 setShowDescError(false);
+setShowDuplicateError(false);
 saveHistory();
 setNodes(newUpdateNode);
+
+}
+
+
+
 
 }
 

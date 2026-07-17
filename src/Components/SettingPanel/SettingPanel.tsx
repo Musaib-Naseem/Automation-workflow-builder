@@ -44,6 +44,7 @@ const showLabelError = useWorkflowStore((state)=>state.showLabelError);
 
 const showDescError = useWorkflowStore((state)=>state.showDescError);
 
+const showDuplicateError = useWorkflowStore((state)=>state.showDuplicateError);
 
 return(
 
@@ -103,6 +104,7 @@ value={selectedNode.data.label}
 className="p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition 
 focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 {showLabelError && <span className="text-red-600 text-sm"> *Label can't be empty </span>}
+{showDuplicateError && <span className="text-red-600 text-sm"> *Label already exists </span>}
 
 <br /><br />
 

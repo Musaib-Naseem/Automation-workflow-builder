@@ -85,6 +85,7 @@ history:WorkflowSnap[],
 RedoContainer:WorkflowSnap[],
 showLabelError:boolean,
 showDescError:boolean,
+showDuplicateError:boolean,
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
@@ -94,7 +95,8 @@ saveRedoCont:()=>void,
 undo:()=>void,
 redo:()=>void,
 setShowLabelError:(showLabelError:boolean)=>void,
-setShowDescError:(showDescError:boolean)=>void
+setShowDescError:(showDescError:boolean)=>void,
+setShowDuplicateError:(showDuplicateError:boolean)=>void
 
 }
 
@@ -133,6 +135,8 @@ RedoContainer:[],
 showLabelError:false,
 
 showDescError:false,
+
+showDuplicateError:false,
 
 setNodes:(nodes)=>{
 
@@ -247,7 +251,9 @@ RedoContainer:RedoContainer.slice(0,RedoContainer.length-1),
 
 setShowLabelError:(showLabelError:boolean)=>set({showLabelError}),
 
-setShowDescError:(showDescError:boolean)=>set({showDescError})
+setShowDescError:(showDescError:boolean)=>set({showDescError}),
+
+setShowDuplicateError:(showDuplicateError:boolean)=>set({showDuplicateError})
 
 
 }));
