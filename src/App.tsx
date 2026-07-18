@@ -11,6 +11,7 @@ import { useWorkflowStore } from "./Store/WorkflowStore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import {toast} from "react-toastify";
+import type { Connection } from "reactflow";
 
 
 function App() {
@@ -461,6 +462,36 @@ toast.success(`File is Downloaded`)
 }
 
 
+const isValidConnection=(connection:Connection)=>{
+
+if(connection.source == connection.target){
+
+toast.error("A node cannnot connect to itself");
+return false;
+
+}
+
+const isDuplicate = edges.some(
+
+edge=> edge.source == connection.source && edge.target == connection.target
+
+);
+
+
+if(isDuplicate){
+
+toast.error("This connection already exist");
+return false;
+
+}
+
+return true;
+
+
+}
+
+
+
 
   return (
     <>
@@ -493,7 +524,7 @@ toast.success(`File is Downloaded`)
 
     <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0"}}>
 
-  <Canvas  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
+  <Canvas  isValidConnection={isValidConnection}  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
 
