@@ -200,29 +200,6 @@ console.log(getDisconnectedId);
 
 console.log(nodes);
 
-useEffect(()=>{
-
-// const updatedNodes = nodes.map((node)=>
-
-// node.id === getDisconnectedId.disconnectedId?.id ? {
-
-// ...node,
-// style:{
-
-// ...node.style,
-//           border: "1px solid red",
-//           // borderRadius: "8px",
-//           // boxShadow: "0 0 0 2px red",
-
-// }
-
-// } : node
-
-// );
-
-// setNodes(updatedNodes);
-
-
 
 const graph:Record<string,string[]>={}
 
@@ -282,7 +259,79 @@ border:visited.has(node.id)  ? "2px solid green" // reachable
 
 console.log(updateNodes);
 
+
+const visitedOne = new Set<string>();
+const recursionStack = new Set<string>();
+
+function hasCycle(nodeId:string):boolean{
+
+visitedOne.add(nodeId);
+recursionStack.add(nodeId);
+
+const neighbours = graph[nodeId] || [];
+
+for(const next of neighbours){
+
+if(!visitedOne.has(next)){
+
+if(hasCycle(next)){
+
+return true;
+
+}
+
+}
+
+else if(recursionStack.has(next)){
+
+return true;
+
+}
+
+
+}
+
+recursionStack.delete(nodeId);
+
+return false;
+
+}
+
+useEffect(()=>{
+
+// const updatedNodes = nodes.map((node)=>
+
+// node.id === getDisconnectedId.disconnectedId?.id ? {
+
+// ...node,
+// style:{
+
+// ...node.style,
+//           border: "1px solid red",
+//           // borderRadius: "8px",
+//           // boxShadow: "0 0 0 2px red",
+
+// }
+
+// } : node
+
+// );
+
+// setNodes(updatedNodes);
+
+
+
+
+
 setNodes(updateNodes);
+
+
+// if(hasCycle("1")){
+
+// toast.error(`Workflow has Cycle`)
+
+// }
+
 
 localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 
@@ -493,6 +542,13 @@ const isValid = validateWorkflow();
 if(!isValid.valid){
 
 toast.error(`${isValid.message}`)
+return;
+
+}
+
+if(hasCycle("1")){
+
+toast.error(`Workflow has Cycle`);
 return;
 
 }
