@@ -1,71 +1,126 @@
-# Automation Workflow Builder
+# 🚀 Automation Workflow Builder
 
-A visual workflow builder built with **React**, **TypeScript**, and **React Flow** that allows users to create, edit, connect, and manage workflow nodes through an intuitive drag-and-drop interface.
+A modern **visual workflow builder** built with **React**, **TypeScript**, **React Flow**, and **Zustand**. It enables users to create, edit, connect, validate, and manage workflow nodes through an intuitive drag-and-drop interface.
+
+---
 
 ## ✨ Features
 
-* ✅ Interactive workflow canvas
-* ✅ Sidebar with predefined workflow nodes
-* ✅ Add new workflow nodes
-* ✅ Delete individual workflow nodes
-* ✅ Drag and reposition nodes
-* ✅ Connect nodes with edges
-* ✅ Edit node labels and descriptions
-* ✅ Settings panel for node configuration
-* ✅ Save workflow to Local Storage
-* ✅ Automatically load saved workflow
-* ✅ Export workflow as JSON
-* ✅ Responsive UI
-* ✅ TypeScript support
+- ✅ Interactive drag-and-drop workflow canvas
+- ✅ Sidebar with predefined workflow nodes
+- ✅ Create, edit, and delete workflow nodes
+- ✅ Drag and reposition nodes
+- ✅ Connect nodes with edge validation
+- ✅ Edit node labels and descriptions
+- ✅ Settings panel for node configuration
+- ✅ Undo/Redo functionality
+- ✅ Workflow validation with visual feedback
+- ✅ Detect disconnected nodes
+- ✅ Cycle detection to prevent invalid workflows
+- ✅ Save workflows to Local Storage
+- ✅ Automatically restore saved workflows
+- ✅ Export workflows as JSON
+- ✅ Responsive and user-friendly interface
+- ✅ Built with TypeScript for type safety
+
+---
 
 ## 🛠️ Tech Stack
 
-* React
-* TypeScript
-* React Flow
-* Tailwind CSS
-* Vite
+- **React**
+- **TypeScript**
+- **React Flow**
+- **Zustand**
+- **Tailwind CSS**
+- **Vite**
+
+---
+
+## 📚 Concepts Implemented
+
+This project demonstrates several real-world frontend engineering concepts:
+
+- ✅ State management with Zustand
+- ✅ Undo/Redo architecture
+- ✅ Graph data structure (Adjacency List)
+- ✅ Depth-First Search (DFS)
+- ✅ Cycle Detection in Directed Graphs
+- ✅ Workflow validation
+- ✅ Connection validation
+- ✅ Local Storage persistence
+- ✅ JSON serialization and export
+- ✅ Component-based architecture
+- ✅ Type-safe development with TypeScript
+
+---
 
 ## 🚀 Getting Started
 
-### Install dependencies
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### Start the development server
+### 3. Start the development server
 
 ```bash
 npm run dev
 ```
 
-### Build for production
+### 4. Build for production
 
 ```bash
 npm run build
 ```
 
-## 📁 Current Functionality
+---
 
-• Built a visual drag-and-drop workflow editor using React Flow.
-• Implemented node management (Add, Edit, Delete).
-• Enabled node-to-node connections with connection validation.
-• Developed a settings panel for editing node properties.
-• Added persistent workflow storage using Local Storage.
-• Implemented workflow export in JSON format.
-• Managed global application state with Zustand.
-• Built Undo/Redo functionality using state history.
-• Added workflow validation, including disconnected node detection.
-• Implemented graph traversal using Depth-First Search (DFS).
-• Added cycle detection to prevent invalid workflow loops.
+## 📂 Current Functionality
 
+- ✅ Visual drag-and-drop workflow editor
+- ✅ Node management (Create, Edit, Delete)
+- ✅ Node-to-node connections
+- ✅ Connection validation
+- ✅ Undo/Redo support
+- ✅ Workflow validation
+- ✅ Disconnected node detection
+- ✅ Reachable node detection using DFS
+- ✅ Cycle detection in workflows
+- ✅ Settings panel
+- ✅ Local Storage persistence
+- ✅ JSON workflow export
 
-## 📌 Planned Features
+---
 
-* Authentication
+## 🎯 Planned Features
 
+- 🔐 Authentication
+- ☁️ Cloud workflow storage
+- 👥 Workflow sharing
+- 📥 JSON import
+- 🧩 Custom node types
+- ⚡ Workflow execution simulator
+- 📊 Mini-map and advanced navigation
+
+---
 
 ## 📄 License
 
-This project is intended for learning, experimentation, and portfolio demonstration.
+This project showcases modern frontend development practices, including React, TypeScript, Zustand, React Flow, and graph algorithms such as Depth-First Search (DFS) and Cycle Detection.
+
+---
+
+## ⭐ Highlights
+
+- Built with modern React best practices
+- Uses Zustand for scalable state management
+- Implements graph algorithms (DFS & Cycle Detection)
+- Demonstrates real-world workflow validation
+- Designed with reusable and maintainable components
