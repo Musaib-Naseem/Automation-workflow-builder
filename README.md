@@ -48,24 +48,23 @@ npm run build
 
 ## 📁 Current Functionality
 
-* Visual drag-and-drop workflow editor
-* Node management (Add, Edit, Delete)
-* Node-to-node connections
-* Settings panel for editing node properties
-* Persistent workflow storage using Local Storage
-* Workflow export as JSON
+• Built a visual drag-and-drop workflow editor using React Flow.
+• Implemented node management (Add, Edit, Delete).
+• Enabled node-to-node connections with connection validation.
+• Developed a settings panel for editing node properties.
+• Added persistent workflow storage using Local Storage.
+• Implemented workflow export in JSON format.
+• Managed global application state with Zustand.
+• Built Undo/Redo functionality using state history.
+• Added workflow validation, including disconnected node detection.
+• Implemented graph traversal using Depth-First Search (DFS).
+• Added cycle detection to prevent invalid workflow loops.
+
 
 ## 📌 Planned Features
 
-* Undo / Redo
-* Custom node types
-* Node validation
-* Workflow execution engine
-* Import workflow from JSON
-* Zoom controls & MiniMap
-* Backend integration
 * Authentication
-* Workflow templates
+
 
 ## 📄 License
 
