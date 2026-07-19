@@ -1,6 +1,8 @@
 import { MdEmail } from "react-icons/md";
 import { LuClock3 } from "react-icons/lu";
 import { GoGitBranch } from "react-icons/go";
+import { MdSms } from "react-icons/md";
+
 import type { NodeConfigType } from "./node";
 
 export const ConfigNode:NodeConfigType={
@@ -26,6 +28,15 @@ color: "text-orange-600",
 icon: GoGitBranch,
 bg: "bg-green-100",
 color: "text-green-600",
+
+},
+
+
+"SMS":{
+
+icon: MdSms,
+bg: "bg-purple-100",
+color: "text-purple-600",
 
 }
 

@@ -6,6 +6,7 @@ import SettingPanel from "./Components/SettingPanel/SettingPanel";
 import { BiExport } from "react-icons/bi";
 import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
+
 import { TbWebhook } from "react-icons/tb";
 import { useWorkflowStore } from "./Store/WorkflowStore";
 import { ToastContainer } from "react-toastify";
@@ -29,9 +30,12 @@ const saveHistory = useWorkflowStore((state)=>state.saveHistory);
 const saveRedoCont = useWorkflowStore((state)=>state.saveRedoCont);
 
 const edges = useWorkflowStore((state)=>state.edges);
+
 const setEdges = useWorkflowStore((state)=>state.setEdges);
 
+const nodes = useWorkflowStore((state)=>state.nodes);
 
+const setNodes = useWorkflowStore((state)=>state.setNodes);
 
 const setShowLabelError = useWorkflowStore((state)=>state.setShowLabelError);
 
@@ -43,6 +47,8 @@ const setShowDuplicateError = useWorkflowStore((state)=>state.setShowDuplicateEr
 const Undo = useWorkflowStore((state)=>state.undo);
 
 const Redo = useWorkflowStore((state)=>state.redo);
+
+
 
 
 const handleKeyDown = (event:KeyboardEvent)=>{
@@ -132,9 +138,6 @@ Undo();
 // ]
 
 
-const nodes = useWorkflowStore((state)=>state.nodes);
-
-const setNodes = useWorkflowStore((state)=>state.setNodes);
 
 const newUpdateNode = useWorkflowStore((state)=>state.newUpdateNode);
 
@@ -188,6 +191,8 @@ message:"All nodes are connected"
 }
 
 
+
+
 const getDisconnectedId = disconnectedNodes();
 
 console.log(getDisconnectedId);
@@ -197,25 +202,87 @@ console.log(nodes);
 
 useEffect(()=>{
 
-const updatedNodes = nodes.map((node)=>
+// const updatedNodes = nodes.map((node)=>
 
-node.id === getDisconnectedId.disconnectedId?.id ? {
+// node.id === getDisconnectedId.disconnectedId?.id ? {
 
-...node,
-style:{
+// ...node,
+// style:{
 
-...node.style,
-          border: "1px solid red",
-          // borderRadius: "8px",
-          // boxShadow: "0 0 0 2px red",
+// ...node.style,
+//           border: "1px solid red",
+//           // borderRadius: "8px",
+//           // boxShadow: "0 0 0 2px red",
+
+// }
+
+// } : node
+
+// );
+
+// setNodes(updatedNodes);
+
+
+
+const graph:Record<string,string[]>={}
+
+edges.forEach((edge)=>{
+
+if(!graph[edge.source]){
+
+graph[edge.source] ??= [];
 
 }
 
-} : node
+graph[edge.source]!.push(edge.target)
 
-);
+});
 
-setNodes(updatedNodes);
+console.log(graph);
+
+const visited = new Set<string>();
+
+const dfs=(nodeId:string)=>{
+
+visited.add(nodeId);
+
+const neighbours = graph[nodeId] || [];
+
+neighbours.forEach((nextNode)=>{
+
+if(!visited.has(nextNode)){
+
+dfs(nextNode);
+
+}
+
+})
+
+}
+
+dfs("1");
+
+console.log(visited);
+
+const updateNodes = nodes.map((node)=>({
+
+...node,
+
+style:{
+
+...node.style,
+backgroundColor:visited.has(node.id)  ? "#DCFCE7" // reachable
+      : "#FEE2E2",
+border:visited.has(node.id)  ? "2px solid green" // reachable
+      : "2px solid red",
+
+}
+
+}));
+
+console.log(updateNodes);
+
+setNodes(updateNodes);
 
 localStorage.setItem("workflowNodes",JSON.stringify(nodes));
 
