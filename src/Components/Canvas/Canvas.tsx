@@ -17,7 +17,7 @@ const Canvas=({nodes,edges,setSelectedNode,isValidConnection}:CanvasProps)=>{
 
 return(
 
-<div style={{ width:"100vw" , height:"100vh"}}>
+<div style={{ width:"100vw" , height:"100vh", marginTop:"-30px"}}>
 
 <ReactFlow isValidConnection={isValidConnection} nodes={nodes}  edges={edges}  onNodeClick={ (_,node)=>{ setSelectedNode(node) }}/>
 </div>

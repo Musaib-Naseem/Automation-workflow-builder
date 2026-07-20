@@ -83,21 +83,21 @@ style:{
 },
 
 
-{
+// {
 
-id:"4",
-position:{x:100,y:200},
-data:{
-label:"SMS",
-type:"SMS",
-description:"Send the message in sms format"
+// id:"4",
+// position:{x:100,y:200},
+// data:{
+// label:"SMS",
+// type:"SMS",
+// description:"Send the message in sms format"
 
-},
-style:{
+// },
+// style:{
     
-}
+// }
 
-},
+// },
 
 
 
@@ -250,11 +250,13 @@ undo:()=>{
 
 const {saveRedoCont} = get();
 
-saveRedoCont();
+
 
 const {history,selectedNode} = get();
 
 if(history.length == 0) return;
+
+saveRedoCont();
 
 const lastSnapShot = history[history.length-1]!;
 

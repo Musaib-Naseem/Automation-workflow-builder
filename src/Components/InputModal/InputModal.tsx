@@ -41,6 +41,7 @@ console.log(inputData);
 
 const nodes = useWorkflowStore((state)=>state.nodes);
 const setNodes = useWorkflowStore((state)=>state.setNodes);
+const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
 
 
 const createNewNode=(e)=>{
@@ -137,6 +138,16 @@ border:visited.has(node.id)  ? "2px solid green" // reachable
 // console.log(updateNodes);
 
 setNodes(updateNodes);
+setNewUpdateNode(updateNodes);
+
+
+setInputData({
+
+label:"",
+type:"",
+description:""
+
+})
 
 setIsModalOpen(false);
 
@@ -192,22 +203,9 @@ isModalOpen && (
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
 
-          <div>
-            <label
-              htmlFor="price"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Type
-            </label>
-
-            <input
-              id="price"
-              type="text"
-             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
+        
 
           <div>
             <label
@@ -220,7 +218,7 @@ isModalOpen && (
 
             <select
               id="icon"
-              value={inputData.icon}
+              value={inputData.type}
               onChange={(e)=>setInputData((prev)=>({...prev,type:e.target.value}))}
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
