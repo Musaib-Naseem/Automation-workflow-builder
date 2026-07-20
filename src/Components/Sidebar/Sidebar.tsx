@@ -3,8 +3,9 @@ import type { WorkFlowMode2 } from "../../Types_ts/node";
 import { ConfigNode } from "../../Types_ts/ConfigNode";
 import { IoArrowUndo } from "react-icons/io5";
 import { IoArrowRedo } from "react-icons/io5";
-import { MdSms } from "react-icons/md";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
+import { FaPlus } from "react-icons/fa";
+import InputModal from "../InputModal/InputModal";
 
 
 type SidebarProps={
@@ -23,6 +24,8 @@ const Redo = useWorkflowStore((state)=>state.redo);
 const history = useWorkflowStore((state)=>state.history);
 
 const redoContainer = useWorkflowStore((state)=>state.RedoContainer);
+
+const setIsModalOpen = useWorkflowStore((state)=>state.setIsModalOpen);
 
 
 return(
@@ -66,11 +69,20 @@ return(
 
 <div className="pt-8 flex flex-col pr-16 ">
 
-<button className={`h-8 w-auto p-1 px-4 ${history.length == 0 ? "bg-gray-400 text-[#fff] cursor-disabled" : "bg-yellow-400 text-[#fff] cursor-pointer" } rounded-sm font-bold text-sm flex justify-center items-center `} onClick={Undo} > <IoArrowUndo className="mr-1"/>
+
+<button onClick={()=>setIsModalOpen(true)}  className="cursor-pointer h-10 w-auto bg-blue-400 text-[#fff] text-sm mb-6 rounded-sm font-bold flex justify-center items-center"><FaPlus />
+ &nbsp;&nbsp;Create Node</button>
+
+ {/* <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" type="button">
+   Toggle modal
+ </button> */}
+<button className={`h-10 w-auto p-1 px-4 ${history.length == 0 ? "bg-gray-400 text-[#fff] cursor-disabled" : "bg-yellow-400 text-[#fff] cursor-pointer" } rounded-sm font-bold text-sm flex justify-center items-center `} onClick={Undo} > <IoArrowUndo className="mr-1"/>
 Undo &nbsp; &nbsp; </button>
 &nbsp;
-<button className={`h-8 w-auto p-1 px-4 ${redoContainer.length == 0 ? "bg-gray-400 text-[#fff] cursor-disabled" : "bg-blue-400 text-[#fff] cursor-pointer" } rounded-sm font-bold text-sm flex justify-center items-center `} onClick={Redo}> <IoArrowRedo className="mr-1"/>
+<button className={`h-10 w-auto p-1 px-4 ${redoContainer.length == 0 ? "bg-gray-400 text-[#fff] cursor-disabled" : "bg-blue-400 text-[#fff] cursor-pointer" } rounded-sm font-bold text-sm flex justify-center items-center `} onClick={Redo}> <IoArrowRedo className="mr-1"/>
 Redo &nbsp; &nbsp; </button>
+
+<InputModal />
 </div>
 
 </div>

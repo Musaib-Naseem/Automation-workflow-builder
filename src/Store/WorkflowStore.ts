@@ -20,13 +20,13 @@ target:"3"
 
 },
 
-{
+// {
 
-id:"e3-1",
-source:"3",
-target:"1"
+// id:"e3-1",
+// source:"3",
+// target:"1"
 
-}
+// }
 
 ];
 
@@ -123,6 +123,7 @@ RedoContainer:WorkflowSnap[],
 showLabelError:boolean,
 showDescError:boolean,
 showDuplicateError:boolean,
+isModalOpen:boolean,
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
@@ -133,7 +134,8 @@ undo:()=>void,
 redo:()=>void,
 setShowLabelError:(showLabelError:boolean)=>void,
 setShowDescError:(showDescError:boolean)=>void,
-setShowDuplicateError:(showDuplicateError:boolean)=>void
+setShowDuplicateError:(showDuplicateError:boolean)=>void,
+setIsModalOpen:(isModalOpen:boolean)=>void
 
 }
 
@@ -174,6 +176,8 @@ showLabelError:false,
 showDescError:false,
 
 showDuplicateError:false,
+
+isModalOpen:false,
 
 setNodes:(nodes)=>{
 
@@ -290,7 +294,9 @@ setShowLabelError:(showLabelError:boolean)=>set({showLabelError}),
 
 setShowDescError:(showDescError:boolean)=>set({showDescError}),
 
-setShowDuplicateError:(showDuplicateError:boolean)=>set({showDuplicateError})
+setShowDuplicateError:(showDuplicateError:boolean)=>set({showDuplicateError}),
+
+setIsModalOpen:(isModalOpen:boolean)=>set({isModalOpen})
 
 
 }));
