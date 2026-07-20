@@ -1,11 +1,150 @@
-import React from "react";
+import React,{useState} from "react";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
+
+import {
+  MdEmail,
+  MdOutlineSms,
+  MdStorage,
+  MdSecurity,
+} from "react-icons/md";
+
+import {
+  LuClock3,
+  LuFileText,
+  LuDatabase,
+} from "react-icons/lu";
+
+import {
+  GoGitBranch,
+} from "react-icons/go";
+
+import {
+  FaBell,
+  FaGlobe,
+} from "react-icons/fa6";
+
+
 
 const InputModal=()=>{
 
 const isModalOpen = useWorkflowStore((state)=>state.isModalOpen);
 
 const setIsModalOpen = useWorkflowStore((state)=>state.setIsModalOpen);
+
+const edges = useWorkflowStore((state)=>state.edges);
+
+const setEdges = useWorkflowStore((state)=>state.setEdges);
+
+const [inputData,setInputData] = useState({ label:"",type:"",description:""});
+
+console.log(inputData);
+
+const nodes = useWorkflowStore((state)=>state.nodes);
+const setNodes = useWorkflowStore((state)=>state.setNodes);
+
+
+const createNewNode=(e)=>{
+
+e.preventDefault();
+
+const lastNode = nodes[nodes.length-1];
+
+const lastEdge = edges[edges.length-1];
+
+const newNode = {
+
+id:crypto.randomUUID(),
+position:{x:lastNode ? lastNode.position.x == 500 ? 100: lastNode.position.x+200 : 100 ,y:lastNode ? lastNode.position.x === 500 ? lastNode.position.y+100 : lastNode.position.y : 100 },
+data:{
+label:inputData.label,
+type:inputData.type,
+description:inputData.description
+},
+style:{}
+
+}
+
+if(!lastEdge) return;
+
+const newEdgeOne = {
+
+id:`e${lastEdge?.target}-${newNode.id}`,
+source:lastEdge?.target,
+target:newNode.id
+
+}
+
+const UpdatedEdgeAll = [...edges,newEdgeOne]
+
+const updateNodesAll = [...nodes,newNode];
+
+setEdges(UpdatedEdgeAll);
+
+const graph:Record<string,string[]>={}
+
+UpdatedEdgeAll.forEach((edge)=>{
+
+if(!graph[edge.source]){
+
+graph[edge.source] ??= [];
+
+}
+
+graph[edge.source]!.push(edge.target)
+
+});
+
+console.log(graph);
+
+const visited = new Set<string>();
+
+const dfs=(nodeId:string)=>{
+
+visited.add(nodeId);
+
+const neighbours = graph[nodeId] || [];
+
+neighbours.forEach((nextNode)=>{
+
+if(!visited.has(nextNode)){
+
+dfs(nextNode);
+
+}
+
+})
+
+}
+
+dfs("1");
+
+const updateNodes = updateNodesAll.map((node)=>({
+
+...node,
+
+style:{
+
+...node.style,
+backgroundColor:visited.has(node.id)  ? "#DCFCE7" // reachable
+      : "#FEE2E2",
+border:visited.has(node.id)  ? "2px solid green" // reachable
+      : "2px solid red",
+
+}
+
+}));
+
+// console.log(updateNodes);
+
+setNodes(updateNodes);
+
+setIsModalOpen(false);
+
+}
+
+
+
+
 
 return(
 
@@ -46,7 +185,9 @@ isModalOpen && (
           <input
             id="name"
             type="text"
-            placeholder="Type product name"
+            placeholder="Type node name"
+            value={inputData.label}
+            onChange={(e)=>setInputData((prev)=>({ ...prev,label:e.target.value}))}
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
@@ -63,29 +204,37 @@ isModalOpen && (
 
             <input
               id="price"
-              type="number"
-              placeholder="$2999"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              type="text"
+             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
           <div>
             <label
-              htmlFor="category"
+              htmlFor="icon"
               className="mb-2 block text-sm font-medium text-gray-700"
             >
-              Icon
+              Type
+
             </label>
 
             <select
-              id="category"
+              id="icon"
+              value={inputData.icon}
+              onChange={(e)=>setInputData((prev)=>({...prev,type:e.target.value}))}
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
-              <option>Select category</option>
-              <option>TV/Monitors</option>
-              <option>PC</option>
-              <option>Gaming/Console</option>
-              <option>Phones</option>
+              <option>Select Type</option>
+              <option value="Email">Email</option>
+              <option value="SMS">SMS</option>
+              <option value="Storage">Storage</option>
+              <option value="Security">Security</option>
+              <option value="Clock">Clock</option>
+              <option value="File">File</option>
+              <option value="Database">Database</option>
+              <option value="Git Branch">Git Branch</option>
+              <option value="Bell">Bell</option>
+
             </select>
           </div>
 
@@ -101,6 +250,8 @@ isModalOpen && (
 
           <textarea
             id="description"
+            value={inputData.description}
+            onChange={(e)=>setInputData((prev)=>({...prev,description:e.target.value}))}
             rows={4}
             placeholder="Write product description here"
             className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -120,9 +271,10 @@ isModalOpen && (
 
           <button
             type="submit"
+            onClick={(e)=>createNewNode(e)}
             className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 cursor-pointer"
           >
-            Add Product
+            Add Node
           </button>
 
         </div>
