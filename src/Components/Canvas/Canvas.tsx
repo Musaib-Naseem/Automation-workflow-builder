@@ -1,10 +1,12 @@
 import type { WorkFlowMode,nodeProps } from "../../Types_ts/node";
-import ReactFlow from "reactflow";
+import {ReactFlow,MiniMap,Controls,
+  Background,} from "reactflow";
 import "reactflow/dist/style.css";
 import type {Connection} from "reactflow";
 import {addEdge} from "reactflow";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
 import {toast} from "react-toastify";
+
 
 type CanvasProps={
 
@@ -289,7 +291,41 @@ return(
 
 <div style={{ width:"100vw" , height:"100vh", marginTop:"-30px"}}>
 
-<ReactFlow onEdgesDelete={onEdgesDelete} onConnect={onConnect}  isValidConnection={isValidConnection} nodes={nodes}  edges={edges}  onNodeClick={ (_,node)=>{ setSelectedNode(node) }}/>
+<ReactFlow onEdgesDelete={onEdgesDelete} onConnect={onConnect}  isValidConnection={isValidConnection} nodes={nodes}  edges={edges}  onNodeClick={ (_,node)=>{ setSelectedNode(node) }}>
+
+<MiniMap      style={{
+    width: 180,
+    height: 120,
+    background: "#F9FAFB",
+    zIndex:99999,
+    border: "1px solid #d1d5db",
+    borderRadius: 8,
+  }} 
+  
+   position="bottom-left"
+
+
+  />
+
+<Controls />
+
+<Background />
+
+</ReactFlow> 
+
+  {nodes.length === 0 && (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none ml-[-100px]">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-700">
+          No workflow found
+        </h2>
+        <p className="mt-2 text-gray-500">
+          Create your first node.
+        </p>
+      </div>
+    </div>
+  )}
+
 </div>
 
 )

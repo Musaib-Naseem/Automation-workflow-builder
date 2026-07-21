@@ -650,13 +650,13 @@ return true;
 
    </div>
 
-    <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0",overflow:"hidden"}}>
+    <div className='w-[57%] flex-1' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0" , overflow:"hidden"}}>
 
   <Canvas   isValidConnection={isValidConnection}  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
 
-    <div className='w-[25%] z-[99999] relative'>
+    <div className='w-[25%]'>
 
     <SettingPanel deleteSelectedNode={deleteSelectedNode} selectedNode={selectedNode}  updateMyNode={updateMyNode} updateSelectedNodes={updateSelectedNodes}  updateSelectedNodesDisc={updateSelectedNodesDisc}/>
 
