@@ -83,21 +83,21 @@ style:{
 },
 
 
-// {
+{
 
-// id:"4",
-// position:{x:100,y:200},
-// data:{
-// label:"SMS",
-// type:"SMS",
-// description:"Send the message in sms format"
+id:"4",
+position:{x:100,y:200},
+data:{
+label:"SMS",
+type:"SMS",
+description:"Send the message in sms format"
 
-// },
-// style:{
+},
+style:{
     
-// }
+}
 
-// },
+},
 
 
 

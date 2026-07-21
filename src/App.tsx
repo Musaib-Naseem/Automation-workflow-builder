@@ -197,9 +197,7 @@ const getDisconnectedId = disconnectedNodes();
 
 console.log(getDisconnectedId);
 
-
 console.log(nodes);
-
 
 const graph:Record<string,string[]>={}
 
@@ -518,6 +516,8 @@ if (incoming && outgoing) {
 
 setEdges(filtered);
 
+toast.success("Node Deleted Successfully");
+
 }
 
 
@@ -528,6 +528,8 @@ saveHistory();
 setSelectedNode(null);
 setNodes([]);
 setNewUpdateNode([]);
+toast.success("All Node Deleted Successfully");
+
 
 }
 
@@ -580,7 +582,7 @@ const a = document.createElement("a");
 a.href = url;
 a.download = "workflow.json";
 a.click();
-toast.success(`File is Downloaded`)
+toast.success(`Workflow Exported Successfully`);
 
 }
 
@@ -645,13 +647,13 @@ return true;
 
    </div>
 
-    <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0"}}>
+    <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0",overflow:"hidden"}}>
 
   <Canvas  isValidConnection={isValidConnection}  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
 
-    <div className='w-[25%] z-10 relative'>
+    <div className='w-[25%] z-[99999] relative'>
 
     <SettingPanel deleteSelectedNode={deleteSelectedNode} selectedNode={selectedNode}  updateMyNode={updateMyNode} updateSelectedNodes={updateSelectedNodes}  updateSelectedNodesDisc={updateSelectedNodesDisc}/>
 

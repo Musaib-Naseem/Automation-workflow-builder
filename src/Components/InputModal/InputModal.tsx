@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
-
+import {toast} from "react-toastify";
 import {
   MdEmail,
   MdOutlineSms,
@@ -70,16 +70,20 @@ if(!lastEdge) return;
 const newEdgeOne = {
 
 id:`e${lastEdge?.target}-${newNode.id}`,
-source:lastEdge?.target,
+source:lastEdge.target,
 target:newNode.id
 
 }
 
-const UpdatedEdgeAll = [...edges,newEdgeOne]
+console.log(newEdgeOne);
 
-const updateNodesAll = [...nodes,newNode];
+const UpdatedEdgeAll = [...edges,newEdgeOne];
+
+console.log(UpdatedEdgeAll);
 
 setEdges(UpdatedEdgeAll);
+
+const updateNodesAll = [...nodes,newNode];
 
 const graph:Record<string,string[]>={}
 
@@ -137,6 +141,7 @@ border:visited.has(node.id)  ? "2px solid green" // reachable
 
 // console.log(updateNodes);
 
+
 setNodes(updateNodes);
 setNewUpdateNode(updateNodes);
 
@@ -150,6 +155,9 @@ description:""
 })
 
 setIsModalOpen(false);
+toast.success(`Node Created Successfully`);
+
+
 
 }
 
@@ -251,7 +259,7 @@ isModalOpen && (
             value={inputData.description}
             onChange={(e)=>setInputData((prev)=>({...prev,description:e.target.value}))}
             rows={4}
-            placeholder="Write product description here"
+            placeholder="Write node description here"
             className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>

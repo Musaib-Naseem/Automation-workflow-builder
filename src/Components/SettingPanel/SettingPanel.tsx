@@ -48,7 +48,7 @@ const showDuplicateError = useWorkflowStore((state)=>state.showDuplicateError);
 
 return(
 
-<div className="pt-6 nodrag">
+<div className="pt-6">
 
 <h2 className="pl-8 pb-4 text-sm font-bold text-[#111827] border-b-1 border-[#E5E7EB]">
 
