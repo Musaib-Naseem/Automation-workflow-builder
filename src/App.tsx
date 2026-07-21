@@ -274,13 +274,16 @@ if(!visitedOne.has(next)){
 
 if(hasCycle(next)){
 
-return true;
+toast.error("Workflow detected cycle");
 
+return true;
 }
 
 }
 
 else if(recursionStack.has(next)){
+
+toast.error("Workflow detected cycle");
 
 return true;
 
@@ -649,7 +652,7 @@ return true;
 
     <div className='w-[57%]' style={{ backgroundColor:"#F8FAFC",borderRight:"1.5px solid #D0D0D0",overflow:"hidden"}}>
 
-  <Canvas  isValidConnection={isValidConnection}  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
+  <Canvas   isValidConnection={isValidConnection}  nodes={nodes}  edges={edges} setSelectedNode={setSelectedNode} />
 
    </div>
 
