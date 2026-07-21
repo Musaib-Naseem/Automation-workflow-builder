@@ -96,6 +96,8 @@ npm run build
 - ✅ Settings panel
 - ✅ Local Storage persistence
 - ✅ JSON workflow export
+- ✅ Mini-map and advanced navigation
+- ✅ Custom node types
 
 ---
 
@@ -105,9 +107,7 @@ npm run build
 - ☁️ Cloud workflow storage
 - 👥 Workflow sharing
 - 📥 JSON import
-- 🧩 Custom node types
 - ⚡ Workflow execution simulator
-- 📊 Mini-map and advanced navigation
 
 ---
 

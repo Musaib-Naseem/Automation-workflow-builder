@@ -22,7 +22,6 @@ function App() {
 // const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
 
 const [open, setOpen] = useState(false);
-const [modResult,setModResult] = useState(false);
 
 const handleClearWorkflow=(res:boolean)=>{
 
