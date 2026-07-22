@@ -15,6 +15,7 @@ import {toast} from "react-toastify";
 import type { Connection } from "reactflow";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { MarkerType } from "reactflow";
 
 
 
@@ -194,11 +195,9 @@ setEdges(workflow.edges);
 
 toast.success("Workflow Imported Successfully");
 
-
 }
 
 reader.readAsText(file);
-
 
 };
 
@@ -573,6 +572,17 @@ if (incoming && outgoing) {
     id: `e${incoming.source}-${outgoing.target}`,
     source: incoming.source,
     target: outgoing.target,
+    animated:true,
+type: "bezier",
+  style: {
+    stroke: "#6c5d8f",
+    strokeWidth: 1,
+  },
+
+markerEnd:{
+type:MarkerType.ArrowClosed
+}
+
   });
 }
 
@@ -693,7 +703,7 @@ return true;
   <div className="flex">
   <button style={{ border:"1px solid #D0D0D0"}} className="mr-6 text-sm px-4 py-2 bg-[#ffffff] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#4F33BD] hover:text-[#fff] transition" onClick={deleteAllNodes}> <MdOutlineDelete  style={{ fontSize:"18px",}}/> &nbsp;&nbsp;Clear Workflow</button>
    
-  <button className="text-sm px-4 py-2 bg-sky-600 text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={()=>fileInputRef.current.click()}> <BiImport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Import Workflow</button>
+  <button className="text-sm px-4 py-2 bg-sky-600 text-white rounded cursor-pointer flex items-center hover:bg-['#4F33BD'] transition" onClick={()=>fileInputRef.current?.click()}> <BiImport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Import Workflow</button>
    
    
   <button className="ml-6 text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={exportWorkflow}> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>

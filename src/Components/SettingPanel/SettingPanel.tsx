@@ -1,9 +1,12 @@
-import React from "react";
+import React,{useState} from "react";
 import type { WorkFlowMode } from "../../Types_ts/node";
 import { ConfigNode } from "../../Types_ts/ConfigNode";
 import { FaSave } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
+import { toast } from "react-toastify";
+import { FaCheck } from "react-icons/fa";
+
 
 
 type settingPanelProps={
@@ -24,6 +27,88 @@ const config = selectedNode
   : null;
 
 const Icon = config?.icon;
+
+
+const edges = useWorkflowStore((state)=>state.edges);
+const nodes = useWorkflowStore((state)=>state.nodes);
+const setExecutionNode = useWorkflowStore((state)=>state.setExecutionNode);
+const setNodes = useWorkflowStore((state)=>state.setNodes);
+const executionNodeId = useWorkflowStore((state)=>state.executionNodeId);
+const logs = useWorkflowStore((state)=>state.logs);
+const setLog = useWorkflowStore((state)=>state.setLog)
+const clearLog = useWorkflowStore((state)=>state.clearLog)
+
+
+const [startNode,setStartNode] = useState("");
+
+
+
+const runWorkflow = async () => {
+  const targetEdges = new Set<string>();
+
+  edges.forEach((edge) => {
+    targetEdges.add(edge.target);
+  });
+
+  const graph:Record<string,string[]>={};
+
+edges.forEach((edge)=>{
+
+if(!graph[edge.source]){
+
+graph[edge.source] ??= []
+
+}
+
+graph[edge.source]!.push(edge.target)
+
+});
+
+console.log(graph);
+
+
+
+  const startNode = nodes.find(
+    (node) => !targetEdges.has(node.id)
+  );
+
+  if (!startNode) return;
+
+  const sleep =(ms:number)=> new Promise((resolve)=>setTimeout(resolve,ms));
+
+  let currentNode = startNode.id;
+
+while(currentNode){
+
+  setExecutionNode(currentNode);
+
+  const node1 = nodes.find((node)=>node.id == currentNode);
+
+  setLog(`${node1?.data?.label ?? "" } executed`);
+
+  await sleep(1000);
+
+  const neighbours = graph[currentNode] ?? [];
+
+  if(neighbours.length == 0){
+
+  break;
+
+  }
+
+  currentNode=neighbours[0]!;
+  
+}
+
+setExecutionNode(null);
+
+clearLog();
+
+toast.success("Workflow Completed");
+
+};
+
+
 
 
 const upLabel=(e:string,id:string):void=>{
@@ -130,6 +215,35 @@ focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 )
 
 }
+
+<div>
+
+
+<button onClick={runWorkflow} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm"> Run Workflow </button> 
+
+
+<h1>Execution </h1>
+
+{
+
+logs && logs.map((val,index)=>{
+
+return(
+
+<div>
+
+<h2><FaCheck /> {val}</h2>
+
+</div>
+
+)
+
+})
+
+
+}
+
+</div>
 
 </div>
 

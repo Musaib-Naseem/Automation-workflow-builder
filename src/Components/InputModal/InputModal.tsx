@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
+import { MarkerType } from "reactflow";
 import {toast} from "react-toastify";
 import {
   MdEmail,
@@ -71,7 +72,17 @@ const newEdgeOne = {
 
 id:`e${lastEdge?.target}-${newNode.id}`,
 source:lastEdge.target,
-target:newNode.id
+target:newNode.id,
+animated:true,
+type: "bezier",
+  style: {
+    stroke: "#6c5d8f",
+    strokeWidth: 1,
+  },
+
+markerEnd:{
+type:MarkerType.ArrowClosed
+}
 
 }
 

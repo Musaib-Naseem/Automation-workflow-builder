@@ -6,6 +6,7 @@ import type {Connection} from "reactflow";
 import {addEdge} from "reactflow";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
 import {toast} from "react-toastify";
+import { useEffect } from "react";
 
 
 type CanvasProps={
@@ -24,6 +25,8 @@ const Canvas=({nodes,edges,setSelectedNode,isValidConnection}:CanvasProps)=>{
 const setEdges = useWorkflowStore((state)=>state.setEdges);
 const setNodes = useWorkflowStore((state)=>state.setNodes);
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
+const executionNodeId = useWorkflowStore((state)=>state.executionNodeId);
+const visited = new Set<string>();
 
 const onConnect=(connection:Connection)=>{
 
@@ -77,20 +80,18 @@ dfs(nextNode);
 
 dfs("1");
 
-const updateNodes = nodes.map((node)=>({
+const updatedNodes = nodes.map((node) => ({
+  ...node,
 
-...node,
-
-style:{
-
-...node.style,
-backgroundColor:visited.has(node.id)  ? "#DCFCE7" // reachable
+  style: {
+    ...node.style,
+    backgroundColor: visited.has(node.id)
+      ? "#DCFCE7"
       : "#FEE2E2",
-border:visited.has(node.id)  ? "2px solid green" // reachable
+    border: visited.has(node.id)
+      ? "2px solid green"
       : "2px solid red",
-
-}
-
+  },
 }));
 
 
@@ -138,8 +139,8 @@ return false;
 }
 
 setEdges([...edges,newEdge]);
-setNodes(updateNodes);
-setNewUpdateNode(updateNodes);
+setNodes(updatedNodes);
+setNewUpdateNode(updatedNodes);
 hasCycle("1");
 
 }
@@ -167,7 +168,7 @@ graph[edge.source]!.push(edge.target)
 
 console.log(graph);
 
-const visited = new Set<string>();
+
 
 const dfs=(nodeId:string)=>{
 
@@ -283,6 +284,37 @@ setNewUpdateNode(updateNodes);
 
 }
 
+
+
+useEffect(()=>{
+
+const updatedNodes = nodes.map((node) => ({
+  ...node,
+
+  style: {
+    ...node.style,
+
+    ...(executionNodeId === node.id
+      ? {
+          backgroundColor: "yellow",
+          border: "2px solid yellow",
+        }
+      : {
+          backgroundColor: visited.has(node.id)
+           ? "#FEE2E2"
+            : "#DCFCE7",
+           
+          border: visited.has(node.id)
+            ? "2px solid red"
+            : "2px solid green",
+        }),
+  },
+}));
+
+setNodes(updatedNodes);
+setNewUpdateNode(updatedNodes);
+  
+},[executionNodeId])
 
 
 
