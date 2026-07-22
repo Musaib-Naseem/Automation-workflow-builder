@@ -5,131 +5,131 @@ import { MarkerType } from "reactflow";
 
 const defaultEdges:Edge[] = [
 
-{
+// {
 
-id:"e1-2",
-source:"1",
-target:"2",
-animated:true,
-type: "bezier",
-  style: {
-    stroke: "#6c5d8f",
-    strokeWidth: 1,
-  },
+// id:"e1-2",
+// source:"1",
+// target:"2",
+// animated:true,
+// type: "bezier",
+//   style: {
+//     stroke: "#6c5d8f",
+//     strokeWidth: 1,
+//   },
 
-markerEnd:{
-type:MarkerType.ArrowClosed
-}
-},
+// markerEnd:{
+// type:MarkerType.ArrowClosed
+// }
+// },
 
 
 
-{
+// {
 
-id:"e2-3",
-source:"2",
-target:"3",
-animated:true,
-type: "bezier",
-  style: {
-       stroke: "#6c5d8f",
-    strokeWidth: 1,
-  },
+// id:"e2-3",
+// source:"2",
+// target:"3",
+// animated:true,
+// type: "bezier",
+//   style: {
+//        stroke: "#6c5d8f",
+//     strokeWidth: 1,
+//   },
 
-  markerEnd:{
-type:MarkerType.ArrowClosed
-}
+//   markerEnd:{
+// type:MarkerType.ArrowClosed
+// }
 
-},
+// },
 
-{
+// {
 
-id:"e3-4",
-source:"3",
-target:"4",
-animated:true,
-type: "bezier",
-  style: {
-      stroke: "#6c5d8f",
-    strokeWidth: 1,
-  },
+// id:"e3-4",
+// source:"3",
+// target:"4",
+// animated:true,
+// type: "bezier",
+//   style: {
+//       stroke: "#6c5d8f",
+//     strokeWidth: 1,
+//   },
 
-  markerEnd:{
-type:MarkerType.ArrowClosed
-}
+//   markerEnd:{
+// type:MarkerType.ArrowClosed
+// }
 
-},
+// },
 
 ];
 
 
 const defaultNodes:WorkFlowMode2[] = [
 
-{
+// {
 
-id:"1",
-position:{x:100,y:100},
-data:{  
-label:"Email",
-type:"Email",
-description:"Send the Welcome Email to the User"
+// id:"1",
+// position:{x:100,y:100},
+// data:{  
+// label:"Email",
+// type:"Email",
+// description:"Send the Welcome Email to the User"
 
-},
+// },
 
-style:{
+// style:{
 
-}
+// }
 
-},
+// },
 
-{
+// {
 
-id:"2",
-position:{x:300,y:100},
-data:{
-label:"Delay",
-type:"Delay",
-description:"Do the delay of 5 mins"
-},
-style:{
+// id:"2",
+// position:{x:300,y:100},
+// data:{
+// label:"Delay",
+// type:"Delay",
+// description:"Do the delay of 5 mins"
+// },
+// style:{
     
-}
+// }
 
 
-},
+// },
 
-{
+// {
 
-id:"3",
-position:{x:500,y:100},
-data:{
-label:"Condition",
-type:"Condition",
-description:"Let it fullfill the all condition"
+// id:"3",
+// position:{x:500,y:100},
+// data:{
+// label:"Condition",
+// type:"Condition",
+// description:"Let it fullfill the all condition"
 
-},
-style:{
+// },
+// style:{
     
-}
+// }
 
-},
+// },
 
 
-{
+// {
 
-id:"4",
-position:{x:100,y:200},
-data:{
-label:"SMS",
-type:"SMS",
-description:"Send the message in sms format"
+// id:"4",
+// position:{x:100,y:200},
+// data:{
+// label:"SMS",
+// type:"SMS",
+// description:"Send the message in sms format"
 
-},
-style:{
+// },
+// style:{
     
-}
+// }
 
-},
+// },
 
 
 

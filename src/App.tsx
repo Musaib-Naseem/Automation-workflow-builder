@@ -1,9 +1,9 @@
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Canvas from "./Components/Canvas/Canvas";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { WorkFlowMode,WorkFlowMode2 } from "./Types_ts/node";
 import SettingPanel from "./Components/SettingPanel/SettingPanel";
-import { BiExport } from "react-icons/bi";
+import { BiExport,BiImport } from "react-icons/bi";
 import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
 
@@ -13,8 +13,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import {toast} from "react-toastify";
 import type { Connection } from "reactflow";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
 // const [selectedNode,setSelectedNode] = useState<WorkFlowMode| null>(null);
 
 const [open, setOpen] = useState(false);
+
+
 
 const handleClearWorkflow=(res:boolean)=>{
 
@@ -168,6 +171,36 @@ Undo();
 const newUpdateNode = useWorkflowStore((state)=>state.newUpdateNode);
 
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
+
+
+const fileInputRef = useRef<HTMLInputElement>(null);
+
+const handleImport = (e) => {
+  
+let file = e.target.files?.[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = () => {
+
+const workflow = JSON.parse(reader.result as string);
+
+console.log(workflow);
+
+setNodes(workflow.nodes);
+setEdges(workflow.edges);
+
+toast.success("Workflow Imported Successfully");
+
+
+}
+
+reader.readAsText(file);
+
+
+};
 
 
 const disconnectedNodes=()=>{
@@ -647,6 +680,7 @@ return true;
   return (
     <>
 
+    <input type="file" ref={fileInputRef} accept=".json" hidden onChange={handleImport} />
 
    <div style={{ backgroundColor:"#ffffff"}} className="overflow-hidden" >
 
@@ -659,7 +693,12 @@ return true;
   <div className="flex">
   <button style={{ border:"1px solid #D0D0D0"}} className="mr-6 text-sm px-4 py-2 bg-[#ffffff] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#4F33BD] hover:text-[#fff] transition" onClick={deleteAllNodes}> <MdOutlineDelete  style={{ fontSize:"18px",}}/> &nbsp;&nbsp;Clear Workflow</button>
    
-  <button className="text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={exportWorkflow}> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
+  <button className="text-sm px-4 py-2 bg-sky-600 text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={()=>fileInputRef.current.click()}> <BiImport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Import Workflow</button>
+   
+   
+  <button className="ml-6 text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={exportWorkflow}> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
+
+
    </div>
    
   </div>
