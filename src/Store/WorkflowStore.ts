@@ -160,6 +160,7 @@ executionNodeId:string | null,
 logs:string[],
 isPaused:boolean,
 isStopped:boolean,
+showExecutionPanel:boolean,
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
@@ -176,7 +177,8 @@ setExecutionNode:(id:string | null)=>void,
 setLog:(message:string)=>void,
 clearLog:()=>void,
 setIsPaused:(val:boolean)=>void,
-setIsStopped:(val:boolean)=>void
+setIsStopped:(val:boolean)=>void,
+setShowExecutionPanel:(val:boolean)=>void
 
 }
 
@@ -227,6 +229,8 @@ logs:[],
 isPaused:false,
 
 isStopped:false,
+
+showExecutionPanel:false,
 
 setNodes:(nodes)=>{
 
@@ -357,6 +361,8 @@ clearLog:()=>set({ logs:[] }),
 setIsPaused:(val:boolean)=>set({isPaused:val}),
 
 setIsStopped:(val:boolean)=>set({isStopped:val}),
+
+setShowExecutionPanel:(val:boolean)=>set({showExecutionPanel:val})
 
 
 

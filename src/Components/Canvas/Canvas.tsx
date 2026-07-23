@@ -20,8 +20,10 @@ isValidConnection:(connection:Connection)=>boolean
 }
 
 
+
 const Canvas=({nodes,edges,setSelectedNode,isValidConnection}:CanvasProps)=>{
 
+const setShowExecutionPanel = useWorkflowStore((state)=>state.setShowExecutionPanel);
 const setEdges = useWorkflowStore((state)=>state.setEdges);
 const setNodes = useWorkflowStore((state)=>state.setNodes);
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
@@ -296,8 +298,8 @@ const updatedNodes = nodes.map((node) => ({
 
     ...(executionNodeId === node.id
       ? {
-          backgroundColor: "yellow",
-          border: "2px solid yellow",
+          backgroundColor: "#FEF3C7",
+          border: "2px solid #F59E0B",
         }
       : {
           backgroundColor: visited.has(node.id)
@@ -323,7 +325,7 @@ return(
 
 <div style={{ width:"100vw" , height:"100vh", marginTop:"-30px"}}>
 
-<ReactFlow onEdgesDelete={onEdgesDelete} onConnect={onConnect}  isValidConnection={isValidConnection} nodes={nodes}  edges={edges}  onNodeClick={ (_,node)=>{ setSelectedNode(node) }}>
+<ReactFlow onEdgesDelete={onEdgesDelete} onConnect={onConnect}  isValidConnection={isValidConnection} nodes={nodes}  edges={edges}  onNodeClick={ (_,node)=>{ setSelectedNode(node);setShowExecutionPanel(false) }}>
 
 <MiniMap      style={{
     width: 180,

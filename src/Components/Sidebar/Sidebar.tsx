@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef} from "react";
 import type { WorkFlowMode2 } from "../../Types_ts/node";
 import { ConfigNode } from "../../Types_ts/ConfigNode";
 import { IoArrowUndo } from "react-icons/io5";
@@ -6,7 +6,8 @@ import { IoArrowRedo } from "react-icons/io5";
 import { useWorkflowStore } from "../../Store/WorkflowStore";
 import { FaPlus } from "react-icons/fa";
 import InputModal from "../InputModal/InputModal";
-
+import {toast} from "react-toastify";
+import { BiExport,BiImport } from "react-icons/bi";
 
 type SidebarProps={
 
@@ -15,7 +16,12 @@ nodes:WorkFlowMode2[]
 }
 
 
+
 const Sidebar=({nodes}:SidebarProps)=>{
+
+  const setEdges = useWorkflowStore((state)=>state.setEdges);
+
+const setNodes = useWorkflowStore((state)=>state.setNodes);
 
 const Undo = useWorkflowStore((state)=>state.undo);
 
@@ -27,14 +33,46 @@ const redoContainer = useWorkflowStore((state)=>state.RedoContainer);
 
 const setIsModalOpen = useWorkflowStore((state)=>state.setIsModalOpen);
 
+const fileInputRef = useRef<HTMLInputElement>(null);
+
+const handleImport = (e) => {
+  
+let file = e.target.files?.[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = () => {
+
+const workflow = JSON.parse(reader.result as string);
+
+console.log(workflow);
+
+setNodes(workflow.nodes);
+setEdges(workflow.edges);
+
+toast.success("Workflow Imported Successfully");
+
+}
+
+reader.readAsText(file);
+
+};
 
 return(
 
-<div className="pl-6 pt-8">
+<div className="pl-6 pt-8 pb-8">
 
-<div className="pt-1 flex flex-col pr-16 ">
+  <input type="file" ref={fileInputRef} accept=".json" hidden onChange={handleImport} />
+
+
+<div className="pt-1 flex flex-col pr-16 mb-8">
 <button onClick={()=>setIsModalOpen(true)}  className="cursor-pointer h-10 w-auto bg-blue-400 text-[#fff] text-sm mb-6 rounded-sm font-bold flex justify-center items-center"><FaPlus />
  &nbsp;&nbsp;Create Node</button>
+
+  <button style={{ border:"1px solid #0EA5E9"}} className="text-sm px-4 py-2 bg-[#fff] border-2 text-[#0EA5E9] rounded cursor-pointer flex items-center hover:bg-[#0284C7] transition font-bold flex justify-center items-center " onClick={()=>fileInputRef.current?.click()}> <BiImport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Import File </button>
+   
  </div>
 
 <h2 className="text-sm font-bold text-[#D0D0D0]"> NODES </h2>

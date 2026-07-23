@@ -6,7 +6,6 @@ import SettingPanel from "./Components/SettingPanel/SettingPanel";
 import { BiExport,BiImport } from "react-icons/bi";
 import { LuWorkflow } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
-
 import { TbWebhook } from "react-icons/tb";
 import { useWorkflowStore } from "./Store/WorkflowStore";
 import { ToastContainer } from "react-toastify";
@@ -16,6 +15,10 @@ import type { Connection } from "reactflow";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { MarkerType } from "reactflow";
+import { FaPlay } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
+import { FaPlayCircle } from "react-icons/fa";
+
 
 
 
@@ -25,7 +28,7 @@ function App() {
 
 const [open, setOpen] = useState(false);
 
-
+const setShowExecutionPanel = useWorkflowStore((state)=>state.setShowExecutionPanel);
 
 const handleClearWorkflow=(res:boolean)=>{
 
@@ -174,32 +177,7 @@ const newUpdateNode = useWorkflowStore((state)=>state.newUpdateNode);
 const setNewUpdateNode = useWorkflowStore((state)=>state.setNewUpdateNode);
 
 
-const fileInputRef = useRef<HTMLInputElement>(null);
 
-const handleImport = (e) => {
-  
-let file = e.target.files?.[0];
-
-if(!file) return;
-
-const reader = new FileReader();
-
-reader.onload = () => {
-
-const workflow = JSON.parse(reader.result as string);
-
-console.log(workflow);
-
-setNodes(workflow.nodes);
-setEdges(workflow.edges);
-
-toast.success("Workflow Imported Successfully");
-
-}
-
-reader.readAsText(file);
-
-};
 
 
 const disconnectedNodes=()=>{
@@ -410,6 +388,9 @@ window.removeEventListener("keydown",handleKeyDown);
 
 
 const updateSelectedNodes=(id:string,label:string)=>{
+
+// setShowExecutionPanel(false);
+
 
 if (!selectedNode || selectedNode.id !== id) return;
 
@@ -687,11 +668,162 @@ return true;
 
 
 
+// const edges = useWorkflowStore((state)=>state.edges);
+// const nodes = useWorkflowStore((state)=>state.nodes);
+const setExecutionNode = useWorkflowStore((state)=>state.setExecutionNode);
+// const setNodes = useWorkflowStore((state)=>state.setNodes);
+const executionNodeId = useWorkflowStore((state)=>state.executionNodeId);
+const logs = useWorkflowStore((state)=>state.logs);
+const setLog = useWorkflowStore((state)=>state.setLog)
+const clearLog = useWorkflowStore((state)=>state.clearLog)
+
+const [runWorkflowBool,setWorkflowBool]= useState<boolean>(true);
+
+// const isPaused = useWorkflowStore((state)=>state.isPaused);
+const setIsPaused = useWorkflowStore((state)=>state.setIsPaused);
+const setIsStopped = useWorkflowStore((state)=>state.setIsStopped);
+
+let firstNode = "";
+
+const runWorkflow = async () => {
+
+  setShowExecutionPanel(true);
+
+  clearLog();
+
+  setLog("Workflow Started");
+
+  const targetEdges = new Set<string>();
+
+  edges.forEach((edge) => {
+    targetEdges.add(edge.target);
+  });
+
+  const graph:Record<string,string[]>={};
+
+edges.forEach((edge)=>{
+
+if(!graph[edge.source]){
+
+graph[edge.source] ??= []
+
+}
+
+graph[edge.source]!.push(edge.target)
+
+});
+
+console.log(graph);
+
+
+
+  const startNode = nodes.find(
+    (node) => !targetEdges.has(node.id)
+  );
+
+  if (!startNode) return;
+
+  const sleep =(ms:number)=> new Promise((resolve)=>setTimeout(resolve,ms));
+
+  await sleep(1000);
+
+ let currentNode = startNode.id;
+
+ firstNode = startNode.id;
+
+while(currentNode){
+
+  if(useWorkflowStore.getState().isStopped){
+
+    break;
+
+  }
+
+  while(useWorkflowStore.getState().isPaused){
+
+    await sleep(200);
+
+  }
+  setExecutionNode(currentNode);
+
+  const node1 = nodes.find((node)=>node.id == currentNode);
+
+  setLog(`${node1?.data?.label ?? "" } executed`);
+
+  
+
+  await sleep(1000);
+
+  const neighbours = graph[currentNode] ?? [];
+
+  if(neighbours.length == 0){
+
+  break;
+
+  }
+
+  
+
+      currentNode=neighbours[0]!;
+  
+}
+
+setExecutionNode(null);
+
+if(!useWorkflowStore.getState().isStopped){
+
+setLog("Workflow Completed");
+toast.success("Workflow Completed");
+
+}
+
+
+};
+
+
+
+const pause=()=>{
+
+setIsPaused(true);
+
+}
+
+
+const resume=()=>{
+
+setIsPaused(false);
+  
+}
+
+
+const stop=()=>{
+
+setIsStopped(true);
+setIsPaused(true);
+setExecutionNode(null);
+
+  
+}
+
+
+const reset=()=>{
+
+setIsStopped(false);
+setIsPaused(false)
+setExecutionNode(null);
+clearLog();
+
+toast.success("Workflow reset");
+
+}
+
+
+
+
   return (
     <>
 
-    <input type="file" ref={fileInputRef} accept=".json" hidden onChange={handleImport} />
-
+  
    <div style={{ backgroundColor:"#ffffff"}} className="overflow-hidden" >
 
    <ToastContainer position="top-right" autoClose={3000}  theme="colored" />
@@ -701,12 +833,34 @@ return true;
   <h1 className="text-2xl font-bold flex items-center"> <LuWorkflow style={{ color:"#6040E0"}} size={28} /> &nbsp; Workflow Builder </h1>
   
   <div className="flex">
-  <button style={{ border:"1px solid #D0D0D0"}} className="mr-6 text-sm px-4 py-2 bg-[#ffffff] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#4F33BD] hover:text-[#fff] transition" onClick={deleteAllNodes}> <MdOutlineDelete  style={{ fontSize:"18px",}}/> &nbsp;&nbsp;Clear Workflow</button>
+  
+  <button onClick={runWorkflow} className="font-bold mr-6 text-sm px-4 py-2  rounded cursor-pointer flex items-center transition bg-[#6D28D9] hover:bg-[#5B21B6] text-white shadow-md hover:shadow-lg">
+  {
+
+executionNodeId !== null ? ( <>
+        <FaSpinner className="animate-spin" /> &nbsp;
+        Running...
+    </> )
+
+:  (
+
+ <>
+        <FaPlayCircle /> &nbsp;
+        Run Workflow
+    </>
+
+)
+
+
+  }
+
+  </button> 
+
+
+  <button style={{ border:"1px solid #D0D0D0"}} className="mr-4 text-sm px-4 py-2 bg-[#F3F4F6] text-[#374151] rounded cursor-pointer font-bold  flex items-center hover:bg-[#E5E7EB] hover:text-[#fff] transition" onClick={deleteAllNodes}> <MdOutlineDelete  style={{ fontSize:"18px",}}/> &nbsp;&nbsp;Clear Workflow</button>
    
-  <button className="text-sm px-4 py-2 bg-sky-600 text-white rounded cursor-pointer flex items-center hover:bg-['#4F33BD'] transition" onClick={()=>fileInputRef.current?.click()}> <BiImport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Import Workflow</button>
-   
-   
-  <button className="ml-6 text-sm px-4 py-2 bg-[#6040E0] text-white rounded cursor-pointer flex items-center hover:bg-[#4F33BD] transition" onClick={exportWorkflow}> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
+ 
+  <button style={{ border:"1px solid #7C3AED"}} className="ml-2 text-sm px-4 py-2  text-[#7C3AED] rounded cursor-pointer font-bold flex items-center hover:bg-[#6D28D9] transition" onClick={exportWorkflow}> <BiExport style={{ fontSize:"18px"}}/> &nbsp;&nbsp;Export Workflow</button>
 
 
    </div>
@@ -718,7 +872,7 @@ return true;
 
    <div className='w-[18%]' style={{ borderRight:"1.5px solid #D0D0D0"}}>
 
-   <Sidebar nodes={nodes}/>
+   <Sidebar nodes={nodes} />
 
    </div>
 
@@ -730,7 +884,7 @@ return true;
 
     <div className='w-[25%]'>
 
-    <SettingPanel deleteSelectedNode={deleteSelectedNode} selectedNode={selectedNode}  updateMyNode={updateMyNode} updateSelectedNodes={updateSelectedNodes}  updateSelectedNodesDisc={updateSelectedNodesDisc}/>
+    <SettingPanel  pause={pause}  resume={resume}  stop={stop}  reset={reset} deleteSelectedNode={deleteSelectedNode} selectedNode={selectedNode}  updateMyNode={updateMyNode} updateSelectedNodes={updateSelectedNodes}  updateSelectedNodesDisc={updateSelectedNodesDisc}/>
 
    </div>
 

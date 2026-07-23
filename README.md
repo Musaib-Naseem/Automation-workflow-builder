@@ -98,6 +98,8 @@ npm run build
 - ✅ JSON workflow export
 - ✅ Mini-map and advanced navigation
 - ✅ Custom node types
+- ✅ JSON import
+- ✅ Workflow execution simulator
 
 ---
 
@@ -106,8 +108,6 @@ npm run build
 - 🔐 Authentication
 - ☁️ Cloud workflow storage
 - 👥 Workflow sharing
-- 📥 JSON import
-- ⚡ Workflow execution simulator
 
 ---
 

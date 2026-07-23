@@ -16,11 +16,15 @@ updateSelectedNodes:(id:string,label:string)=>void;
 updateSelectedNodesDisc:(id:string,description:string)=>void;
 updateMyNode:()=>void;
 deleteSelectedNode:(id:string)=>void;
+pause:()=>void,
+resume:()=>void,
+stop:()=>void,
+reset:()=>void,
 
 }
 
 
-const SettingPanel=({selectedNode,updateSelectedNodes,updateSelectedNodesDisc,updateMyNode,deleteSelectedNode}:settingPanelProps)=>{
+const SettingPanel=({pause,resume,stop,reset,selectedNode,updateSelectedNodes,updateSelectedNodesDisc,updateMyNode,deleteSelectedNode}:settingPanelProps)=>{
 
 const config = selectedNode
   ? ConfigNode[selectedNode.data.type as keyof typeof ConfigNode]
@@ -29,153 +33,10 @@ const config = selectedNode
 const Icon = config?.icon;
 
 
-const edges = useWorkflowStore((state)=>state.edges);
-const nodes = useWorkflowStore((state)=>state.nodes);
-const setExecutionNode = useWorkflowStore((state)=>state.setExecutionNode);
-const setNodes = useWorkflowStore((state)=>state.setNodes);
-const executionNodeId = useWorkflowStore((state)=>state.executionNodeId);
+
+const setExecutionNode = useWorkflowStore((state)=>state.setExecutionNode); 
+
 const logs = useWorkflowStore((state)=>state.logs);
-const setLog = useWorkflowStore((state)=>state.setLog)
-const clearLog = useWorkflowStore((state)=>state.clearLog)
-
-const [runWorkflowBool,setWorkflowBool]= useState<boolean>(true);
-
-// const isPaused = useWorkflowStore((state)=>state.isPaused);
-const setIsPaused = useWorkflowStore((state)=>state.setIsPaused);
-const setIsStopped = useWorkflowStore((state)=>state.setIsStopped);
-
-let firstNode = "";
-
-const runWorkflow = async () => {
-
-  setWorkflowBool(false);
-
-  clearLog();
-
-  setLog("Workflow Started");
-
-  const targetEdges = new Set<string>();
-
-  edges.forEach((edge) => {
-    targetEdges.add(edge.target);
-  });
-
-  const graph:Record<string,string[]>={};
-
-edges.forEach((edge)=>{
-
-if(!graph[edge.source]){
-
-graph[edge.source] ??= []
-
-}
-
-graph[edge.source]!.push(edge.target)
-
-});
-
-console.log(graph);
-
-
-
-  const startNode = nodes.find(
-    (node) => !targetEdges.has(node.id)
-  );
-
-  if (!startNode) return;
-
-  const sleep =(ms:number)=> new Promise((resolve)=>setTimeout(resolve,ms));
-
-  await sleep(1000);
-
- let currentNode = startNode.id;
-
- firstNode = startNode.id;
-
-while(currentNode){
-
-  if(useWorkflowStore.getState().isStopped){
-
-    break;
-
-  }
-
-  while(useWorkflowStore.getState().isPaused){
-
-    await sleep(200);
-
-  }
-  setExecutionNode(currentNode);
-
-  const node1 = nodes.find((node)=>node.id == currentNode);
-
-  setLog(`${node1?.data?.label ?? "" } executed`);
-
-  
-
-  await sleep(1000);
-
-  const neighbours = graph[currentNode] ?? [];
-
-  if(neighbours.length == 0){
-
-  break;
-
-  }
-
-  
-
-      currentNode=neighbours[0]!;
-  
-}
-
-setExecutionNode(null);
-
-
-// setLog("Workflow Completed");
-// toast.success("Workflow Completed");
-
-};
-
-
-
-const Pause=()=>{
-
-setIsPaused(true);
-
-}
-
-
-const Resume=()=>{
-
-setIsPaused(false);
-  
-}
-
-
-const Stop=()=>{
-
-setIsStopped(true);
-setIsPaused(true);
-setExecutionNode(null);
-
-  
-}
-
-
-const reset=()=>{
-
-setIsStopped(false);
-setIsPaused(false)
-setExecutionNode(null);
-clearLog();
-
-toast.success("Workflow reset");
-
-}
-
-
-
 
 
 const upLabel=(e:string,id:string):void=>{
@@ -198,150 +59,209 @@ const showDescError = useWorkflowStore((state)=>state.showDescError);
 
 const showDuplicateError = useWorkflowStore((state)=>state.showDuplicateError);
 
+const setShowExecutionPanel = useWorkflowStore((state)=>state.setShowExecutionPanel);
+
+
 return(
 
-<div className="pt-6">
-
-<h2 className="pl-8 pb-4 text-sm font-bold text-[#111827] border-b-1 border-[#E5E7EB]">
-
-SETTING PANEL
-
-</h2>
-
-{!selectedNode && ( <p className="pl-8 pt-4 text-[#374151] font-[500]"> No Node Selected </p> )}
+<div>
 
 {
+  !useWorkflowStore.getState().showExecutionPanel ? (
 
-selectedNode && (
+    <div className="pt-6">
 
-<div className="pl-8 pt-4">
+      <h2 className="pl-8 pb-4 text-sm font-bold text-[#111827] border-b border-[#E5E7EB]">
+        SETTING PANEL
+      </h2>
 
-<label className="text-sm font-[500]"> Node ID </label>
+      {!selectedNode && (
+        <p className="pl-8 pt-4 text-[#374151] font-[500]">
+          No Node Selected
+        </p>
+      )}
 
-<br />
+      {selectedNode && (
+        <div className="pl-8 pt-4">
 
-<input disabled type="text" value={selectedNode.id} className="cursor-not-allowed bg-[#F9FAFB] p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition"/>
+          <label className="text-sm font-[500]">Node ID</label>
+          <br />
 
-<br /><br />
+          <input
+            disabled
+            type="text"
+            value={selectedNode.id}
+            className="cursor-not-allowed bg-[#F9FAFB] p-2 border border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition"
+          />
 
-<label className="text-sm font-[500]"> Node Type </label>
+          <br />
+          <br />
 
-<br />
+          <label className="text-sm font-[500]">Node Type</label>
 
-<div className="cursor-not-allowed flex items-center border border-[#D1D5DB] rounded-md w-[90%] mt-2 px-1 bg-[#F9FAFB] hover:shadow-sm transition">
-<div className={`w-8 h-8 flex items-center justify-center rounded-lg ${config && config.bg}`}> 
+          <br />
 
-  {Icon && <Icon className="text-lg text-purple-600" />}
+          <div className="cursor-not-allowed flex items-center border border-[#D1D5DB] rounded-md w-[90%] mt-2 px-1 bg-[#F9FAFB] hover:shadow-sm transition">
+
+            <div className={`w-8 h-8 flex items-center justify-center rounded-lg ${config?.bg}`}>
+              {Icon && <Icon className={`text-lg ${config?.color}`} />}
+            </div>
+
+            <input
+              type="text"
+              value={selectedNode.data.type}
+              readOnly
+              className="cursor-not-allowed flex-1 p-2 outline-none bg-transparent"
+            />
+
+          </div>
+
+          <br />
+
+          <label className="text-sm font-[500]">Node Label</label>
+
+          <br />
+
+          <input
+            type="text"
+            value={selectedNode.data.label}
+            onChange={(e) => upLabel(e.target.value, selectedNode.id)}
+            className="p-2 border border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"
+          />
+
+          {showLabelError && (
+            <span className="text-red-600 text-sm">
+              *Label can't be empty
+            </span>
+          )}
+
+          {showDuplicateError && (
+            <span className="text-red-600 text-sm">
+              *Label already exists
+            </span>
+          )}
+
+          <br />
+          <br />
+
+          <label className="text-sm font-[500]">
+            Node Description
+          </label>
+
+          <br />
+
+          <textarea
+            value={selectedNode.data.description}
+            onChange={(e) => upDesc(e.target.value, selectedNode.id)}
+            className="h-[95px] p-2 border border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"
+          />
+
+          {showDescError && (
+            <span className="text-red-500 text-sm">
+              *Description can't be empty
+            </span>
+          )}
+
+          <br />
+          <br />
+
+          <div className="flex flex-col">
+
+            <button
+              onClick={updateMyNode}
+              className="cursor-pointer border-[#059669] border-2 bg-[#059669] text-white w-[90%] p-2 font-[500] rounded-md mt-2 flex justify-center items-center text-sm"
+            >
+              <FaSave />
+              &nbsp; Save Changes
+            </button>
+
+            <button
+              onClick={() => deleteSelectedNode(selectedNode.id)}
+              className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm"
+            >
+              <MdDelete />
+              &nbsp; Delete Node
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
+    </div>
+
+  ) : (
+
+    <div className="pt-6">
+
+   
+
+      {/* <h1 className="mt-6 px-4 text-lg font-semibold">
+        Execution
+      </h1> */}
+
+       <h2 className="pl-4 pb-4 text-lg font-bold text-[#111827] border-b border-[#E5E7EB]">
+        Execution
+      </h2>
+
+
+  { setExecutionNode !== null &&  <div className="flex gap-2 px-4 pt-4 pb-4">
+
+
+  <button
+    onClick={pause}
+    className="w-1/4 py-2 rounded-lg bg-[#F59E0B] text-white font-semibold text-sm shadow-md hover:bg-[#D97706] hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer"
+  >
+    Pause
+  </button>
+
+  <button
+    onClick={resume}
+    className="w-1/4 py-2 rounded-lg bg-[#10B981] text-white font-semibold text-sm shadow-md hover:bg-[#059669] hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer"
+  >
+    Resume
+  </button>
+
+  <button
+    onClick={stop}
+    className="w-1/4 py-2 rounded-lg bg-[#EF4444] text-white font-semibold text-sm shadow-md hover:bg-[#DC2626] hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer"
+  >
+    Stop
+  </button>
+
+  <button
+    onClick={reset}
+    className="w-1/4 py-2 rounded-lg bg-[#3B82F6] text-white font-semibold text-sm shadow-md hover:bg-[#2563EB] hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer"
+  >
+    Reset
+  </button>
 
 </div>
 
-  <input
-    type="text"
-    value={selectedNode.data.type}
-    readOnly
-    className="cursor-not-allowed flex-1 p-2 outline-none bg-transparent"
-  />
+}
+
+
+      <div className="mt-4 px-4 space-y-2">
+
+        {logs.map((val, index) => (
+          <div key={index}>
+            <h2 className="flex items-center gap-2 text-sm">
+              <FaCheck className="text-green-600" />
+              {val}
+            </h2>
+          </div>
+        ))}
+
+      </div>
+
+
+    </div>
+
+  )}
+
+  </div>
   
-</div>
-
-<br />
-
-
-<label className="text-sm font-[500]"> Node Label </label>
-
-<br />
-
-<input type="text" onChange={(e)=>upLabel(e.target.value,selectedNode.id)}  
-value={selectedNode.data.label} 
-className="p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition 
-focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
-{showLabelError && <span className="text-red-600 text-sm"> *Label can't be empty </span>}
-{showDuplicateError && <span className="text-red-600 text-sm"> *Label already exists </span>}
-
-<br /><br />
-
-<label className="text-sm font-[500]"> Node Description </label>
-
-<br />
-
-<textarea  onChange={(e)=>upDesc(e.target.value,selectedNode.id)}  value={selectedNode.data.description}  className="h-[95px] p-2 border border-1 border-[#D1D5DB] mt-2 rounded-md w-[90%] hover:shadow-sm transition focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"></textarea>
-{showDescError && <span className="text-red-500 text-sm"> *Description can't be empty </span>}
-
-<br /><br />
-
-<div className="flex flex-col">
-
-<button className="cursor-pointer border-[#059669] border-2 bg-[#059669] text-[#fff] w-[90%] p-2 font-[500] rounded-md mt-2 flex justify-center items-center text-sm" onClick={updateMyNode}> <FaSave /> &nbsp;  Save Changes </button>
-
-<button className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm" onClick={()=>deleteSelectedNode(selectedNode!.id)}  > <MdDelete /> &nbsp; Delete Node </button>
-
-</div>
-
-</div>
-
 )
-
 }
-
-<div>
-
-{
-
-runWorkflowBool ? (
-
-<div>
-
-<button onClick={runWorkflow} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm"> Run Workflow </button> 
-
-</div>
-
-) : (
-
-<div className="flex">
-
-<button onClick={Pause} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Pause </button>  
- <button onClick={Resume} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Resume </button> 
-<button onClick={Stop} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Stop </button> 
-<button onClick={reset} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Reset </button> 
-
-</div>
-
-)
-
-
-
-}
-
-
-<h1>Execution </h1>
-
-{
-
-logs && logs.map((val,index)=>{
-
-return(
-
-<div>
-
-<h2 className="flex items-center"><FaCheck /> {val}</h2>
-
-</div>
-
-)
-
-})
-
-
-}
-
-</div>
-
-</div>
-
-)
-
-
-}
-
 
 export default SettingPanel;
