@@ -38,12 +38,22 @@ const logs = useWorkflowStore((state)=>state.logs);
 const setLog = useWorkflowStore((state)=>state.setLog)
 const clearLog = useWorkflowStore((state)=>state.clearLog)
 
+const [runWorkflowBool,setWorkflowBool]= useState<boolean>(true);
 
-const [startNode,setStartNode] = useState("");
+// const isPaused = useWorkflowStore((state)=>state.isPaused);
+const setIsPaused = useWorkflowStore((state)=>state.setIsPaused);
+const setIsStopped = useWorkflowStore((state)=>state.setIsStopped);
 
-
+let firstNode = "";
 
 const runWorkflow = async () => {
+
+  setWorkflowBool(false);
+
+  clearLog();
+
+  setLog("Workflow Started");
+
   const targetEdges = new Set<string>();
 
   edges.forEach((edge) => {
@@ -76,15 +86,32 @@ console.log(graph);
 
   const sleep =(ms:number)=> new Promise((resolve)=>setTimeout(resolve,ms));
 
-  let currentNode = startNode.id;
+  await sleep(1000);
+
+ let currentNode = startNode.id;
+
+ firstNode = startNode.id;
 
 while(currentNode){
 
+  if(useWorkflowStore.getState().isStopped){
+
+    break;
+
+  }
+
+  while(useWorkflowStore.getState().isPaused){
+
+    await sleep(200);
+
+  }
   setExecutionNode(currentNode);
 
   const node1 = nodes.find((node)=>node.id == currentNode);
 
   setLog(`${node1?.data?.label ?? "" } executed`);
+
+  
 
   await sleep(1000);
 
@@ -96,17 +123,57 @@ while(currentNode){
 
   }
 
-  currentNode=neighbours[0]!;
+  
+
+      currentNode=neighbours[0]!;
   
 }
 
 setExecutionNode(null);
 
-clearLog();
 
-toast.success("Workflow Completed");
+// setLog("Workflow Completed");
+// toast.success("Workflow Completed");
 
 };
+
+
+
+const Pause=()=>{
+
+setIsPaused(true);
+
+}
+
+
+const Resume=()=>{
+
+setIsPaused(false);
+  
+}
+
+
+const Stop=()=>{
+
+setIsStopped(true);
+setIsPaused(true);
+setExecutionNode(null);
+
+  
+}
+
+
+const reset=()=>{
+
+setIsStopped(false);
+setIsPaused(false)
+setExecutionNode(null);
+clearLog();
+
+toast.success("Workflow reset");
+
+}
+
 
 
 
@@ -218,8 +285,32 @@ focus:outline-none focus:ring-1 focus:ring-[#6040E0] focus:border-[#6040E0]"/>
 
 <div>
 
+{
+
+runWorkflowBool ? (
+
+<div>
 
 <button onClick={runWorkflow} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[90%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm"> Run Workflow </button> 
+
+</div>
+
+) : (
+
+<div className="flex">
+
+<button onClick={Pause} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Pause </button>  
+ <button onClick={Resume} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Resume </button> 
+<button onClick={Stop} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Stop </button> 
+<button onClick={reset} className="cursor-pointer border-[#EF4444] border-2 text-[#EF4444] w-[25%] p-2 font-[500] rounded-md mt-4 mb-4 flex justify-center items-center text-sm mr-2"> Reset </button> 
+
+</div>
+
+)
+
+
+
+}
 
 
 <h1>Execution </h1>
@@ -232,7 +323,7 @@ return(
 
 <div>
 
-<h2><FaCheck /> {val}</h2>
+<h2 className="flex items-center"><FaCheck /> {val}</h2>
 
 </div>
 

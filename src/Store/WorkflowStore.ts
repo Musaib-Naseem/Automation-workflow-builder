@@ -158,6 +158,8 @@ showDuplicateError:boolean,
 isModalOpen:boolean,
 executionNodeId:string | null,
 logs:string[],
+isPaused:boolean,
+isStopped:boolean,
 setNodes : (nodes:WorkFlowMode2[])=>void,
 setEdges : (edges:Edge[])=>void,
 setSelectedNode :(selectedNode:WorkFlowMode | null)=>void,
@@ -172,7 +174,9 @@ setShowDuplicateError:(showDuplicateError:boolean)=>void,
 setIsModalOpen:(isModalOpen:boolean)=>void,
 setExecutionNode:(id:string | null)=>void,
 setLog:(message:string)=>void,
-clearLog:()=>void
+clearLog:()=>void,
+setIsPaused:(val:boolean)=>void,
+setIsStopped:(val:boolean)=>void
 
 }
 
@@ -219,6 +223,10 @@ isModalOpen:false,
 executionNodeId:null,
 
 logs:[],
+
+isPaused:false,
+
+isStopped:false,
 
 setNodes:(nodes)=>{
 
@@ -344,7 +352,11 @@ setExecutionNode:(id:string | null)=> set({ executionNodeId:id }),
 
 setLog:(message)=> set((state)=>({ logs:[...state.logs,message]})),
 
-clearLog:()=>set({ logs:[] })
+clearLog:()=>set({ logs:[] }),
+
+setIsPaused:(val:boolean)=>set({isPaused:val}),
+
+setIsStopped:(val:boolean)=>set({isStopped:val}),
 
 
 
