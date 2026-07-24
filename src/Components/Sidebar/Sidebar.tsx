@@ -17,7 +17,7 @@ nodes:WorkFlowMode2[]
 
 
 
-const Sidebar=({nodes}:SidebarProps)=>{
+const Sidebar=React.memo(({nodes}:SidebarProps)=>{
 
   const setEdges = useWorkflowStore((state)=>state.setEdges);
 
@@ -149,6 +149,6 @@ return(
 
 )
 
-}
+});
 
 export default Sidebar;

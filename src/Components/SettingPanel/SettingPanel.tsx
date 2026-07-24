@@ -24,7 +24,7 @@ reset:()=>void,
 }
 
 
-const SettingPanel=({pause,resume,stop,reset,selectedNode,updateSelectedNodes,updateSelectedNodesDisc,updateMyNode,deleteSelectedNode}:settingPanelProps)=>{
+const SettingPanel=React.memo(({pause,resume,stop,reset,selectedNode,updateSelectedNodes,updateSelectedNodesDisc,updateMyNode,deleteSelectedNode}:settingPanelProps)=>{
 
 const config = selectedNode
   ? ConfigNode[selectedNode.data.type as keyof typeof ConfigNode]
@@ -262,6 +262,6 @@ return(
   </div>
   
 )
-}
+});
 
 export default SettingPanel;

@@ -1,3 +1,4 @@
+import React from "react";
 import type { WorkFlowMode,nodeProps } from "../../Types_ts/node";
 import {ReactFlow,MiniMap,Controls,
   Background,} from "reactflow";
@@ -21,7 +22,7 @@ isValidConnection:(connection:Connection)=>boolean
 
 
 
-const Canvas=({nodes,edges,setSelectedNode,isValidConnection}:CanvasProps)=>{
+const Canvas=React.memo(({nodes,edges,setSelectedNode,isValidConnection}:CanvasProps)=>{
 
 const setShowExecutionPanel = useWorkflowStore((state)=>state.setShowExecutionPanel);
 const setEdges = useWorkflowStore((state)=>state.setEdges);
@@ -364,7 +365,7 @@ return(
 
 )
 
-}
+});
 
 
 export default Canvas;

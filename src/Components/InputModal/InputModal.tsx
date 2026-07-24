@@ -26,7 +26,7 @@ import {
 
 
 
-const InputModal=()=>{
+const InputModal=React.memo(()=>{
 
 const isModalOpen = useWorkflowStore((state)=>state.isModalOpen);
 
@@ -312,7 +312,7 @@ isModalOpen && (
 
 )
 
-}
+});
 
 
 export default InputModal;
