@@ -35,7 +35,7 @@ const setIsModalOpen = useWorkflowStore((state)=>state.setIsModalOpen);
 
 const fileInputRef = useRef<HTMLInputElement>(null);
 
-const handleImport = (e) => {
+const handleImport = (e:any) => {
   
 let file = e.target.files?.[0];
 
